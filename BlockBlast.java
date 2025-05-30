@@ -16,15 +16,16 @@ public class BlockBlast {
         frame.setIconImage(icon.getImage());
 
         // set background color
-        frame.getContentPane().setBackground(new Color(0x425ca2));
+        frame.getContentPane().setBackground(new Color(0x1559c1));
 
         // create ui
-        ImageIcon title = new ImageIcon(new ImageIcon("cpt/title.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        ImageIcon title = new ImageIcon(new ImageIcon("cpt/title.png").getImage().getScaledInstance(386, 398, Image.SCALE_SMOOTH));
         JLabel titleLabel = new JLabel();
         titleLabel.setIcon(title);
         // titleLabel.setVerticalAlignment(JLabel.TOP);
         // titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setBounds(0, 0, 100, 100);
+        titleLabel.setBounds(0, 0, 400, 400);
+
         frame.add(titleLabel);
 
         // render the frame
