@@ -1,5 +1,3 @@
-package cpt;
-
 import java.awt.*;
 import javax.swing.border.AbstractBorder;
 
