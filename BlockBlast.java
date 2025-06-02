@@ -16,6 +16,8 @@ public class BlockBlast implements ActionListener {
     static JButton viewLeaderboard;
     static JLabel titleLabel;
     static JFrame frame;
+    static JButton back;
+    static JScrollPane scrollPane;
 
     public static void main(String[] args) {
         frame = new JFrame();
@@ -111,6 +113,19 @@ public class BlockBlast implements ActionListener {
 
         frame.add(viewLeaderboard);
 
+        // create back button
+        back = new JButton();
+        ImageIcon backButton = new ImageIcon(
+                new ImageIcon("back.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+        back.setIcon(backButton);
+        back.setVisible(true);
+        back.setBounds(20, 20, 60, 60);
+        back.setFocusable(false);
+        back.setOpaque(false);
+        back.setContentAreaFilled(false);
+        back.setBorderPainted(false);
+        back.addActionListener(new BlockBlast());
+
         // render the frame
         frame.setVisible(true); // make frame visible
     }
@@ -162,6 +177,9 @@ public class BlockBlast implements ActionListener {
 
                 while (reader.ready()) {
                     leaderboard[i] = reader.readLine().split(",");
+                    if (leaderboard[i][0].length() > 8) {
+                        leaderboard[i][0] = leaderboard[i][0].substring(0, 8);
+                    }
                     i++;
                 }
                 reader.close();
@@ -173,19 +191,41 @@ public class BlockBlast implements ActionListener {
                 JLabel[] entries = new JLabel[lineCount];
                 for (int k = 0; k < entries.length; k++) {
                     entries[k] = new JLabel();
-                    entries[k].setText((k + 1) + ": " + leaderboard[k][0]
-                            + " ".repeat(8 - leaderboard[k][0].length() - leaderboard[k][1].length())
-                            + leaderboard[k][1]);
-                    username.setText("Username:");
+
+                    String spacing = "";
+                    if (k < 9) {
+                        spacing = "  ";
+                    }
+
+                    entries[k].setHorizontalAlignment(SwingConstants.LEFT);
+                    if (k == 0) {
+                        entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
+                                + "  ".repeat(10 - leaderboard[k][0].length()) + " "
+                                +leaderboard[k][1]);
+                    } else {
+                        entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
+                                + "  ".repeat(10 - leaderboard[k][0].length())
+                                + leaderboard[k][1]);
+                    }
                     entries[k].setForeground(Color.white);
-                    entries[k].setBounds(75, 50 + (70 * k), 250, 50);
+                    entries[k].setBounds(75, 70 + (70 * k), 250, 50);
                     entries[k].setFont(new Font("SansSerif", Font.BOLD, 25));
                     entries[k].setVisible(true);
 
+                    if (k == 0) {
+                        entries[k].setForeground(new Color(0xFFD700));
+                    } else if (k == 1) {
+                        entries[k].setForeground(new Color(0xC0C0C0));
+                    } else if (k == 2) {
+                        entries[k].setForeground(new Color(0xCD7F32));
+                    }
+
+                    leaderboardPanel.add(back);
                     leaderboardPanel.add(entries[k]);
                 }
 
-                JScrollPane scrollPane = new JScrollPane(leaderboardPanel);
+
+                scrollPane = new JScrollPane(leaderboardPanel);
                 scrollPane.setBounds(0, 0, 400, 800);
                 scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
                 frame.add(scrollPane);
@@ -193,7 +233,12 @@ public class BlockBlast implements ActionListener {
             } catch (Exception exception) {
 
             }
-
+        } else if (e.getSource() == back) {
+            System.out.println("go back");
+            scrollPane.setVisible(false);
+            titleLabel.setVisible(true);
+            start.setVisible(true);
+            viewLeaderboard.setVisible(true);
         }
     }
 }
