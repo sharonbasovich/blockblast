@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class BlockBlast implements ActionListener {
 
@@ -11,11 +13,14 @@ public class BlockBlast implements ActionListener {
     static JLabel error;
     boolean flag = false;
     static String user;
+    static JButton viewLeaderboard;
+    static JLabel titleLabel;
+    static JFrame frame;
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setTitle("Block Blast - Sharon and Yichen"); // set name of app
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit program when closing window
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exi program when closing window
         frame.setResizable(false); // prevent resizing
         frame.setSize(400, 800); // set dimensions of window
         frame.setLayout(null);
@@ -29,11 +34,12 @@ public class BlockBlast implements ActionListener {
         // create title logo
         ImageIcon title = new ImageIcon(
                 new ImageIcon("title.png").getImage().getScaledInstance(386, 398, Image.SCALE_SMOOTH));
-        JLabel titleLabel = new JLabel();
+        titleLabel = new JLabel();
         titleLabel.setIcon(title);
         // titleLabel.setVerticalAlignment(JLabel.TOP);
         // titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setBounds(0, 0, 400, 400);
+        titleLabel.setBounds(0, 0, 385, 385);
+
         frame.add(titleLabel);
 
         // create
@@ -42,19 +48,19 @@ public class BlockBlast implements ActionListener {
                 new ImageIcon("play.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         start.setIcon(play);
         start.addActionListener(new BlockBlast());
-        start.setBounds(130, 400, 140, 50);
+        start.setBounds(85, 400, 230, 50);
         start.setFocusable(false);
         start.setText("Start");
         start.setFont(new Font("SansSerif", Font.BOLD, 30));
-        start.setForeground(Color.white); 
+        start.setForeground(Color.white);
         start.setContentAreaFilled(true);
         start.setOpaque(true);
-        start.setBackground(Color.orange);
+        start.setBackground(new Color(0xeea018));
         start.setBorderPainted(false);
         start.setIconTextGap(10);
         frame.add(start);
 
-        //create username prompt
+        // create username prompt
         username = new JLabel();
         username.setText("Username:");
         username.setForeground(Color.white);
@@ -64,7 +70,6 @@ public class BlockBlast implements ActionListener {
 
         frame.add(username);
 
-
         // create name input box
         name = new JTextField();
         name.setBounds(100, 530, 200, 50);
@@ -73,7 +78,8 @@ public class BlockBlast implements ActionListener {
         name.setCaretColor(Color.white);
         name.setForeground(Color.white);
         name.setFont(new Font("SansSerif", Font.BOLD, 30));
-        name.setBorder(BorderFactory.createCompoundBorder(name.getBorder(), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        name.setBorder(
+                BorderFactory.createCompoundBorder(name.getBorder(), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         frame.add(name);
 
         // create error message
@@ -86,6 +92,25 @@ public class BlockBlast implements ActionListener {
 
         frame.add(error);
 
+        // create leaderboard button
+        viewLeaderboard = new JButton();
+        ImageIcon view = new ImageIcon(
+                new ImageIcon("leaderboard.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+        viewLeaderboard.setIcon(view);
+        viewLeaderboard.addActionListener(new BlockBlast());
+        viewLeaderboard.setBounds(85, 490, 230, 50);
+        viewLeaderboard.setFocusable(false);
+        viewLeaderboard.setText("Leaderboard");
+        viewLeaderboard.setFont(new Font("SansSerif", Font.BOLD, 25));
+        viewLeaderboard.setForeground(Color.white);
+        viewLeaderboard.setContentAreaFilled(true);
+        viewLeaderboard.setOpaque(true);
+        viewLeaderboard.setBackground(new Color(0x19cba4));
+        viewLeaderboard.setBorderPainted(false);
+        viewLeaderboard.setIconTextGap(10);
+
+        frame.add(viewLeaderboard);
+
         // render the frame
         frame.setVisible(true); // make frame visible
     }
@@ -97,15 +122,78 @@ public class BlockBlast implements ActionListener {
             start.setText("Go!");
             name.setVisible(true);
             username.setVisible(true);
+            viewLeaderboard.setVisible(false);
             flag = true;
         } else if (e.getSource() == start && flag) {
             System.out.println("Validate username");
-            if(name.getText().length() == 0) {
+            if (name.getText().length() == 0) {
                 error.setVisible(true);
                 System.out.println("Invalid");
             } else {
                 user = name.getText();
             }
+        } else if (e.getSource() == viewLeaderboard) {
+            start.setVisible(false);
+            viewLeaderboard.setVisible(false);
+            titleLabel.setVisible(false);
+
+            String[][] leaderboard;
+
+            try {
+                BufferedReader lineCounter = new BufferedReader(new FileReader("leaderboard.txt"));
+                int lineCount = 0;
+                while (lineCounter.readLine() != null) {
+                    lineCount++;
+                }
+
+                lineCounter.close();
+
+                leaderboard = new String[lineCount][2];
+
+                BufferedReader reader = new BufferedReader(new FileReader("leaderboard.txt"));
+
+                int i = 0;
+
+                for (int j = 0; j < leaderboard.length; j++) {
+                    for (int j2 = 0; j2 < leaderboard[j].length; j2++) {
+                        leaderboard[j][j2] = "";
+                    }
+                }
+
+                while (reader.ready()) {
+                    leaderboard[i] = reader.readLine().split(",");
+                    i++;
+                }
+                reader.close();
+
+                JPanel leaderboardPanel = new JPanel();
+                leaderboardPanel.setLayout(null);
+                leaderboardPanel.setPreferredSize(new Dimension(400, lineCount * 70 + 100));
+                leaderboardPanel.setBackground(new Color(0x1559c1));
+                JLabel[] entries = new JLabel[lineCount];
+                for (int k = 0; k < entries.length; k++) {
+                    entries[k] = new JLabel();
+                    entries[k].setText((k + 1) + ": " + leaderboard[k][0]
+                            + " ".repeat(8 - leaderboard[k][0].length() - leaderboard[k][1].length())
+                            + leaderboard[k][1]);
+                    username.setText("Username:");
+                    entries[k].setForeground(Color.white);
+                    entries[k].setBounds(75, 50 + (70 * k), 250, 50);
+                    entries[k].setFont(new Font("SansSerif", Font.BOLD, 25));
+                    entries[k].setVisible(true);
+
+                    leaderboardPanel.add(entries[k]);
+                }
+
+                JScrollPane scrollPane = new JScrollPane(leaderboardPanel);
+                scrollPane.setBounds(0, 0, 400, 800);
+                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                frame.add(scrollPane);
+
+            } catch (Exception exception) {
+
+            }
+
         }
     }
 }
