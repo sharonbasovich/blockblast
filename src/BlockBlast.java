@@ -3,14 +3,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BlockBlast{
-    public static void init(Game game, JFrame frame){
+    public static void init(Game game, JFrame frame) {
+        // Add board panel
         BoardPanel boardPanel = new BoardPanel(game.getBoard());
         boardPanel.setBounds(5, 0, 364, 500);
         frame.add(boardPanel);
 
-        Block block = new Block(3,2,"#ff0000", new boolean[][]{{true, true, true},{true, true, true}});
-        block.setBounds(200, 500, 300, 300);
-        frame.add(block);
+        
+        SimpleBlock simpleBlock = new SimpleBlock(3, 2, "#ff0000", new boolean[][]{{true, true, true}, {true, true, true}});
+        simpleBlock.setBounds(5, 520, 120, 80);
+        
+        frame.add(simpleBlock);
     }
     public static void setupFrame(JFrame frame){
         frame.setTitle("Block Blast - Sharon and Yichen"); // set name of app
