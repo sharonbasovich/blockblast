@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 public class BlockBlast implements ActionListener {
 
@@ -21,6 +24,7 @@ public class BlockBlast implements ActionListener {
     static Timer time;
     static JLabel box;
     static falling piece;
+    static JLabel titleLeaderboard;
 
     public static void main(String[] args) {
         frame = new JFrame();
@@ -63,6 +67,23 @@ public class BlockBlast implements ActionListener {
         start.setBackground(new Color(0xeea018));
         start.setBorderPainted(false);
         start.setIconTextGap(10);
+
+        start.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                start.setBackground(Color.GREEN); // Change color on hover
+                start.setBounds(75, 530, 250, 70);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                start.setBounds(85, 540, 230, 50);
+
+                start.setBackground(new Color(0xeea018)); // Restore original color
+            }
+        });
+
+
         frame.add(start);
 
         // create username prompt
@@ -114,6 +135,21 @@ public class BlockBlast implements ActionListener {
         viewLeaderboard.setBorderPainted(false);
         viewLeaderboard.setIconTextGap(10);
 
+        viewLeaderboard.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                viewLeaderboard.setBackground(Color.GREEN); // Change color on hover
+                viewLeaderboard.setBounds(75, 600, 250, 70);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                viewLeaderboard.setBounds(85, 610, 230, 50);
+
+                viewLeaderboard.setBackground(new Color(0x19cba4)); // Restore original color
+            }
+        });
+
         frame.add(viewLeaderboard);
 
         // create back button
@@ -141,6 +177,16 @@ public class BlockBlast implements ActionListener {
         box.setIcon(piece.getNextPiece());
         frame.add(box);
 
+        // leaderboard title
+        titleLeaderboard = new JLabel("Leaderboard");
+        // titleLeaderboard.setVisible(false);
+        titleLeaderboard.setBounds(90, 10, 200, 70);
+        // titleLeaderboard.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLeaderboard.setFocusable(false);
+        titleLeaderboard.setFont(new Font("SansSerif", Font.BOLD, 30));
+        titleLeaderboard.setForeground(Color.white);
+        titleLeaderboard.setOpaque(false);
+
         // render the frame
         frame.setVisible(true); // make frame visible
     }
@@ -167,6 +213,7 @@ public class BlockBlast implements ActionListener {
             viewLeaderboard.setVisible(false);
             titleLabel.setVisible(false);
             box.setVisible(false);
+            // titleLeaderboard.setVisible(true);
 
             String[][] leaderboard;
 
@@ -201,6 +248,7 @@ public class BlockBlast implements ActionListener {
                 reader.close();
 
                 JPanel leaderboardPanel = new JPanel();
+                leaderboardPanel.add(titleLeaderboard);
                 leaderboardPanel.setLayout(null);
                 leaderboardPanel.setPreferredSize(new Dimension(400, lineCount * 70 + 100));
                 leaderboardPanel.setBackground(new Color(0x1559c1));
@@ -255,6 +303,8 @@ public class BlockBlast implements ActionListener {
             start.setVisible(true);
             viewLeaderboard.setVisible(true);
             box.setVisible(true);
+            // titleLeaderboard.setVisible(false);
+
         } else if (e.getSource() == time) {
             // System.out.println("time");
             box.setIcon(piece.getNextPiece());
