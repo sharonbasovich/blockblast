@@ -18,6 +18,9 @@ public class BlockBlast implements ActionListener {
     static JFrame frame;
     static JButton back;
     static JScrollPane scrollPane;
+    static Timer time;
+    static JLabel box;
+    static falling piece;
 
     public static void main(String[] args) {
         frame = new JFrame();
@@ -50,7 +53,7 @@ public class BlockBlast implements ActionListener {
                 new ImageIcon("play.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         start.setIcon(play);
         start.addActionListener(new BlockBlast());
-        start.setBounds(85, 400, 230, 50);
+        start.setBounds(85, 540, 230, 50);
         start.setFocusable(false);
         start.setText("Start");
         start.setFont(new Font("SansSerif", Font.BOLD, 30));
@@ -66,7 +69,7 @@ public class BlockBlast implements ActionListener {
         username = new JLabel();
         username.setText("Username:");
         username.setForeground(Color.white);
-        username.setBounds(105, 480, 200, 50);
+        username.setBounds(105, 600, 200, 50);
         username.setFont(new Font("SansSerif", Font.BOLD, 25));
         username.setVisible(false);
 
@@ -74,7 +77,7 @@ public class BlockBlast implements ActionListener {
 
         // create name input box
         name = new JTextField();
-        name.setBounds(100, 530, 200, 50);
+        name.setBounds(100, 650, 200, 50);
         name.setVisible(false);
         name.setBackground(Color.orange);
         name.setCaretColor(Color.white);
@@ -88,7 +91,7 @@ public class BlockBlast implements ActionListener {
         error = new JLabel();
         error.setText("<html><body>Name must be at least<br>one character</body></html>");
         error.setForeground(Color.red);
-        error.setBounds(105, 555, 200, 100);
+        error.setBounds(105, 675, 200, 100);
         error.setFont(new Font("SansSerif", Font.BOLD, 15));
         error.setVisible(false);
 
@@ -100,7 +103,7 @@ public class BlockBlast implements ActionListener {
                 new ImageIcon("leaderboard.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
         viewLeaderboard.setIcon(view);
         viewLeaderboard.addActionListener(new BlockBlast());
-        viewLeaderboard.setBounds(85, 490, 230, 50);
+        viewLeaderboard.setBounds(85, 610, 230, 50);
         viewLeaderboard.setFocusable(false);
         viewLeaderboard.setText("Leaderboard");
         viewLeaderboard.setFont(new Font("SansSerif", Font.BOLD, 25));
@@ -125,6 +128,18 @@ public class BlockBlast implements ActionListener {
         back.setContentAreaFilled(false);
         back.setBorderPainted(false);
         back.addActionListener(new BlockBlast());
+
+        // create switching piece animation
+        time = new Timer(400, new BlockBlast());
+        time.start();
+
+        piece = new falling();
+
+        box = new JLabel();
+        box.setBounds(125, 370, 150, 150);
+        box.setHorizontalAlignment(SwingConstants.CENTER);
+        box.setIcon(piece.getNextPiece());
+        frame.add(box);
 
         // render the frame
         frame.setVisible(true); // make frame visible
@@ -151,6 +166,7 @@ public class BlockBlast implements ActionListener {
             start.setVisible(false);
             viewLeaderboard.setVisible(false);
             titleLabel.setVisible(false);
+            box.setVisible(false);
 
             String[][] leaderboard;
 
@@ -201,7 +217,7 @@ public class BlockBlast implements ActionListener {
                     if (k == 0) {
                         entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
                                 + "  ".repeat(10 - leaderboard[k][0].length()) + " "
-                                +leaderboard[k][1]);
+                                + leaderboard[k][1]);
                     } else {
                         entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
                                 + "  ".repeat(10 - leaderboard[k][0].length())
@@ -224,7 +240,6 @@ public class BlockBlast implements ActionListener {
                     leaderboardPanel.add(entries[k]);
                 }
 
-
                 scrollPane = new JScrollPane(leaderboardPanel);
                 scrollPane.setBounds(0, 0, 400, 800);
                 scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -239,6 +254,10 @@ public class BlockBlast implements ActionListener {
             titleLabel.setVisible(true);
             start.setVisible(true);
             viewLeaderboard.setVisible(true);
+            box.setVisible(true);
+        } else if (e.getSource() == time) {
+            // System.out.println("time");
+            box.setIcon(piece.getNextPiece());
         }
     }
 }
