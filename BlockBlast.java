@@ -27,6 +27,10 @@ public class BlockBlast implements ActionListener {
     static JLabel titleLeaderboard;
 
     public static void main(String[] args) {
+
+        String[] test = { "Sharon", "6" };
+        new Leaderboard(test);
+
         frame = new JFrame();
         frame.setTitle("Block Blast - Sharon and Yichen"); // set name of app
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exi program when closing window
