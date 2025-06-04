@@ -29,6 +29,7 @@ public class BlockTile extends JComponent{
     }
     @Override
     public void paintComponent(Graphics g){
+        super.paintComponent(g);
         g.setColor(Color.decode(color));
         g.fillRect(x, y, 40, 40);
         g.setColor(Color.BLACK);

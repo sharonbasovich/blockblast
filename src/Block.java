@@ -2,56 +2,70 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Block extends JPanel {
-    private int width;
-    private int height;
+    private int w;
+    private int h;
     private boolean[][] shape;
-    private BlockTile[][] blockTiles;
     private String color;
+    private BlockTile[][] blockTiles;
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getColor() {
-        return color;
-    }
-    public Block(int width, int height, String color, boolean[][] shape) {
-        this.width = width;
-        this.height = height;
+    public Block(int w, int h, String color, boolean[][] shape) {
+        this.w = w;
+        this.h = h;
         this.shape = shape;
         this.color = color;
-        blockTiles = new BlockTile[height][width];
         
-        // Initialize block tiles
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        // Initialize BlockTile array
+        blockTiles = new BlockTile[h][w];
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
                 if (shape[i][j]) {
+                    // Create BlockTile with coordinates relative to this panel
                     blockTiles[i][j] = new BlockTile(j * 40, i * 40, color, true);
+                } else {
+                    blockTiles[i][j] = null; // No tile for empty spaces
                 }
             }
         }
         
-        // CRITICAL: Set size explicitly
-        setPreferredSize(new Dimension(width * 40, height * 40));
-        setMinimumSize(new Dimension(width * 40, height * 40));
-        setMaximumSize(new Dimension(width * 40, height * 40));
+        // Force size
+        setPreferredSize(new Dimension(w * 40, h * 40));
+        setMinimumSize(new Dimension(w * 40, h * 40));
+        setMaximumSize(new Dimension(w * 40, h * 40));
         
-        // Force the size to be respected
-        
-        // Make sure it's visible
+        // Make visible
         setOpaque(true);
         setBackground(Color.WHITE);
+        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         
-        // Use a border to see the component
-        setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        
+        // Draw each BlockTile
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                if (blockTiles[i][j] != null) {
+                    blockTiles[i][j].paintComponent(g);
+                }
+            }
+        }
+    }
+    public int getw() {
+        return w;
+    }
+    
+    public void setw(int w) {
+        this.w = w;
     }
 
-    public int getWidth() {
-        return width;
+    public int geth() {
+        return h;
     }
 
-    public int getHeight() {
-        return height;
+    public void seth(int h) {
+        this.h = h;
     }
 
     public boolean[][] getShape() {
@@ -62,29 +76,19 @@ public class Block extends JPanel {
         this.shape = shape;
     }
 
-    public void setwidth(int width) {
-        this.width = width;
+    public String getColor() {
+        return color;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        
-        // Draw background
-        g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
-        
-        // Draw each tile
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (shape[i][j]) {
-                    blockTiles[i][j].paintComponent(g);
-                }
-            }
-        }
+    public BlockTile[][] getBlockTiles() {
+        return blockTiles;
+    }
+
+    public void setBlockTiles(BlockTile[][] blockTiles) {
+        this.blockTiles = blockTiles;
     }
 }
