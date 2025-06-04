@@ -18,7 +18,7 @@ public class Game {
         this.board = new BoardTile[8][8];
         for(int i = 0;i<8;i++){
             for(int j = 0;j<8;j++){
-                board[i][j] = new BoardTile(40*(i+1), (40*(j+1)+100), false, null);
+                board[i][j] = new BoardTile(40*i, 40*j, false, null);
             }
         }
         this.score = 0;
@@ -37,10 +37,10 @@ public class Game {
         }
     }
     public void placeBlock(Block b, int startX, int startY){
-        for(int i = 0;i<b.getWidth();i++){
-            for(int j = 0;j<b.getHeight();j++){
+        for(int i = 0;i<b.geth();i++){
+            for(int j = 0;j<b.getw();j++){
                 if(b.getShape()[i][j] == true){
-                    board[startX+i][startY+j].setOccupied(true);
+                    board[startY+i][startX+j].setOccupied(true);
                 }
             }
         }
@@ -109,9 +109,9 @@ public class Game {
         return false;
     }
     public boolean BlockFits(Block b, int startX, int startY){
-        for(int i = 0;i<b.getWidth();i++){
-            for(int j = 0;j<b.getHeight();j++){
-                if(board[startX+i][startY+j].isOccupied() == true && b.getShape()[i][j] == true){
+        for(int i = 0;i<b.geth();i++){
+            for(int j = 0;j<b.getw();j++){
+                if(board[startY+i][startX+j].isOccupied() == true && b.getShape()[i][j] == true){
                     return false;
                 }
             }
