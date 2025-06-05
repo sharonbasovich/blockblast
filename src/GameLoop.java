@@ -17,7 +17,7 @@ public class GameLoop {
         frame.add(layeredPane);
     }
 
-    public static void initBlocks(Game game, JFrame frame, JLayeredPane layeredPane) {
+    public void initBlocks(Game game, JFrame frame, JLayeredPane layeredPane) {
         Block block = new Block(3, 2, "#ff0000", new boolean[][] { { true, true, true }, { true, true, true } });
         makeDraggable(block, frame, layeredPane, game);
         game.getBlocks().add(block);
@@ -123,7 +123,7 @@ public class GameLoop {
         }).start();
     }
 
-    private static void makeDraggable(Block block, JFrame frame, JLayeredPane layeredPane, Game game) {
+    private void makeDraggable(Block block, JFrame frame, JLayeredPane layeredPane, Game game) {
         MouseAdapter adapter = new MouseAdapter() {
             Point startPoint;
 
@@ -138,12 +138,19 @@ public class GameLoop {
                 int x = location.x + e.getX() - startPoint.x;
                 int y = location.y + e.getY() - startPoint.y;
                 block.setLocation(x, y);
+                onHover(block, frame, layeredPane, game, new Point(block.getX() + 20, block.getY() + 20));
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 Point location = new Point(block.getX() + 20, block.getY() + 20);
-                onRelease(block, frame, layeredPane, game, location);
+                new Thread(() -> {
+                    try {
+                        onRelease(block, frame, layeredPane, game, location);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }).start();
             }
         };
 
@@ -152,10 +159,54 @@ public class GameLoop {
     }
 
     public static void onHover(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location) {
-
+        for(int i = 0;i<8;i++){
+            for(int j = 0;j<8;j++){
+                if(!game.getBoard()[i][j].isOccupied()){
+                    game.getBoard()[i][j].setColor(null);
+                    game.getBoard()[i][j].setTint(null);
+                }
+                else{
+                    game.getBoard()[i][j].setTint(null);
+                }
+            }
+        }
+        frame.repaint();
+        if (location.x > 30 && location.x < 30 + (8 - block.getw() + 1) * 40 && location.y > 100
+                && location.y < 100 + (8 - block.geth() + 1) * 40) {
+            System.out.println("Inside valid drop zone!");
+            int x = (int) (location.x - 30) / 40;
+            int y = (int) (location.y - 100) / 40;
+            System.out.println("x: " + x + " y: " + y);
+            // More debugging for the block dimensions
+            int w = block.getWidth() / 40;
+            int h = block.getHeight() / 40;
+            if (game.BlockFits(block, x, y) == true) {
+                for (int i = 0; i < w; i++) {
+                    for (int j = 0; j < h; j++) {
+                        Color c = Color.decode(block.getColor());
+                        
+                        game.getBoard()[y+j][x + i].setTint(new Color(c.getRed(), c.getGreen(), c.getBlue(), 50));
+                    }
+                }
+                frame.repaint();
+            }
+        } else {
+            System.out.println("Outside valid drop zone, returning to home position");
+        }
     }
 
-    public static void onRelease(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location) {
+    public synchronized void onRelease(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location) throws InterruptedException {
+        for(int i = 0;i<8;i++){
+            for(int j = 0;j<8;j++){
+                if(!game.getBoard()[i][j].isOccupied()){
+                    game.getBoard()[i][j].setColor(null);
+                    game.getBoard()[i][j].setTint(null);
+                }
+                else{
+                    game.getBoard()[i][j].setTint(null);
+                }
+            }
+        }
         System.out.println(30 + (8 - block.getw() + 1) * 40);
         System.out.println(100 + (8 - block.geth() + 1) * 40);
         if (location.x > 30 && location.x < 30 + (8 - block.getw() + 1) * 40 && location.y > 100
@@ -173,35 +224,51 @@ public class GameLoop {
             if (game.BlockFits(block, x, y) == true) {
                 for (int i = 0; i < w; i++) {
                     for (int j = 0; j < h; j++) {
-                        game.getBoard()[x + i][y + j].setColor(block.getColor());
-
+                        game.getBoard()[y+j][x + i].setColor(block.getColor());
                     }
-
                 }
                 game.placeBlock(block, x, y);
                 layeredPane.remove(block);
                 game.getOnHand().remove(block);
                 System.out.println("removed");
-
                 System.out.println(game.getOnHand().size());
                 synchronized (game) {
                     game.notifyAll();
                 }
+                synchronized (GameLoop.class) {
+                    GameLoop.class.wait();
+                }
                 game.setScore(game.getScore() + block.getNumberOfBlocks());
-
                 System.out.println("Score: " + game.getScore());
                 score.setText("Score: " + String.valueOf(game.getScore()));
                 frame.revalidate();
                 frame.repaint();
             } else {
                 System.out.println("Outside valid drop zone, returning to home position");
-                block.setLocation(5, 520);
+                if(block.getSlot() == 0){
+                    block.setLocation(5, 520);
+                }
+                if(block.getSlot() == 1){
+                    block.setLocation(150, 520);
+                }
+                if(block.getSlot() == 2){
+                    block.setLocation(250, 520);
+                }
             }
 
             // Your existing code...
         } else {
             System.out.println("Outside valid drop zone, returning to home position");
-            block.setLocation(5, 520);
+            System.out.println("Outside valid drop zone, returning to home position");
+                if(block.getSlot() == 0){
+                    block.setLocation(5, 520);
+                }
+                if(block.getSlot() == 1){
+                    block.setLocation(150, 520);
+                }
+                if(block.getSlot() == 2){
+                    block.setLocation(250, 520);
+                }
         }
     }
 }

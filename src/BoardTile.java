@@ -8,6 +8,11 @@ public class BoardTile extends JComponent {
     private int x;
     private int y;
     private String color;
+    private Color tint;
+    public void setTint(Color tint) {
+        this.tint = tint;
+    }
+
     private boolean isOccupied;
 
     public BoardTile(int x, int y, boolean occupied, String color) {
@@ -17,6 +22,7 @@ public class BoardTile extends JComponent {
         this.color = color;
 
     }
+    
 
     public String getColor() {
         return color;
@@ -36,13 +42,23 @@ public class BoardTile extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
-        if (color == null) {
+        if (color == null && tint == null) {
             g.setColor(Color.BLUE);
 
             g.fillRect(x, y, 40, 40);
         } else {
-            g.setColor(Color.decode(color));
+            if (isOccupied) {
+                if (color != null) {
+                g.setColor(Color.decode(color));
+            } else {
+                g.setColor(Color.GRAY); // Default color when occupied but no color specified
+            }
             g.fillRect(x, y, 40, 40);
+            }
+            else{
+                g.setColor(tint);
+                g.fillRect(x, y, 40, 40);
+            }
         }
 
         g.setColor(Color.BLACK);

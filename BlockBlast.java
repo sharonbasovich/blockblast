@@ -215,7 +215,7 @@ public class BlockBlast implements ActionListener {
                 System.out.println("Invalid");
             } else {
                 user = name.getText();
-
+                error.setVisible(false);
                 start.setVisible(false);
                 viewLeaderboard.setVisible(false);
                 titleLabel.setVisible(false);

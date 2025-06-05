@@ -7,6 +7,7 @@ import javax.swing.*;
 public class Game {
     private BoardTile[][] board;
     private int score;
+
     public void setScore(int score) {
         this.score = score;
     }
@@ -31,7 +32,7 @@ public class Game {
         this.board = new BoardTile[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                board[i][j] = new BoardTile(40 * i, 40 * j, false, null);
+                board[i][j] = new BoardTile(40 * j, 40 * i, false, null);
             }
         }
         this.score = 0;
@@ -40,10 +41,10 @@ public class Game {
     }
 
     public synchronized void playGame(JFrame frame, JLayeredPane layeredPane) throws InterruptedException {
-        while (checkForLoss() == false) {
+        while (true) {
             if (onHand.size() == 0) {
                 System.out.println(blocks.size());
-                for(int i = 0;i<3;i++){
+                for (int i = 0; i < 3; i++) {
                     System.out.println(blocks.get(i));
                 }
                 onHand.add(blocks.get(0));
@@ -52,26 +53,35 @@ public class Game {
                 onHand.get(0).setBounds(5, 500, onHand.get(0).getw() * 40, onHand.get(0).geth() * 40);
                 layeredPane.add(onHand.get(0), JLayeredPane.DRAG_LAYER);
                 System.out.println("Block 1 added");
+                onHand.get(0).setSlot(0);
                 onHand.get(1).setBounds(150, 500, onHand.get(1).getw() * 40, onHand.get(1).geth() * 40);
                 layeredPane.add(onHand.get(1), JLayeredPane.DRAG_LAYER);
                 System.out.println("Block 2 added");
+                onHand.get(1).setSlot(1);
                 onHand.get(2).setBounds(250, 500, onHand.get(2).getw() * 40, onHand.get(2).geth() * 40);
                 layeredPane.add(onHand.get(2), JLayeredPane.DRAG_LAYER);
                 System.out.println("Block 3 added");
+                onHand.get(2).setSlot(2);
 
             }
             wait();
             updateBoard();
             frame.repaint();
             frame.revalidate();
-            for(int i = 0;i<8;i++){
-                for(int j = 0;j<8;j++){
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
                     System.out.print(board[i][j].isOccupied() + " ");
                 }
                 System.out.println();
             }
-            
+            synchronized (GameLoop.class) {
+                GameLoop.class.notifyAll();
+            }
+            if(checkForLoss()){
+                break;
+            }
         }
+        System.out.println("lost");
     }
 
     public void placeBlock(Block b, int startX, int startY) {
@@ -121,8 +131,8 @@ public class Game {
         for (int i = 0; i < 8; i++) {
             if (fullRow(board[i])) {
                 rowIndices.add(i);
-                System.out.println("row" );
-                score+=10;
+                System.out.println("row");
+                score += 10;
                 System.out.println(score);
             }
         }
@@ -130,35 +140,35 @@ public class Game {
             if (fullColumn(i)) {
                 columnIndices.add(i);
                 System.out.println("column");
-                score+=10;
+                score += 10;
             }
         }
         System.out.println(rowIndices.size());
-        for(int i = 0;i<rowIndices.size();i++){
+        for (int i = 0; i < rowIndices.size(); i++) {
             System.out.println(rowIndices.get(i));
         }
-        for(int i = 0;i<columnIndices.size();i++){
+        for (int i = 0; i < columnIndices.size(); i++) {
             System.out.println(columnIndices.get(i));
         }
         System.out.println(columnIndices.size());
         for (int i = 0; i < rowIndices.size(); i++) {
             for (int j = 0; j < 8; j++) {
                 board[rowIndices.get(i)][j].setOccupied(false);
-                board[j][rowIndices.get(i)].setColor(null);
+                board[rowIndices.get(i)][j].setColor(null);
                 System.out.println("set");
             }
         }
         for (int i = 0; i < columnIndices.size(); i++) {
             for (int j = 0; j < 8; j++) {
                 board[j][columnIndices.get(i)].setOccupied(false);
-                board[columnIndices.get(i)][j].setColor(null);
+                board[j][columnIndices.get(i)].setColor(null);
             }
         }
     }
 
     public boolean checkValidMoves(Block b) {
-        for (int i = 0; i < 8 - b.getWidth() + 1; i++) {
-            for (int j = 0; j < 8 - b.getHeight() + 1; j++) {
+        for (int i = 0; i < 8 - b.geth() + 1; i++) {
+            for (int j = 0; j < 8 - b.getw() + 1; j++) {
                 if (BlockFits(b, i, j)) {
                     return true;
                 }

@@ -10,6 +10,15 @@ public class Block extends JPanel {
     private String color;
     private BlockTile[][] blockTiles;
     private int numberOfBlocks;
+    private int slot;
+
+    public void setSlot(int slot) {
+        this.slot = slot;
+    }
+
+    public int getSlot() {
+        return slot;
+    }
 
     public Block(int w, int h, String color, boolean[][] shape) {
         this.w = w;

@@ -145,7 +145,16 @@ public class BlockBlast {
                 frame.repaint();
             } else {
                 System.out.println("Outside valid drop zone, returning to home position");
-                block.setLocation(5, 520);
+                System.out.println("Outside valid drop zone, returning to home position");
+                if(block.getSlot() == 0){
+                    block.setLocation(5, 520);
+                }
+                if(block.getSlot() == 1){
+                    block.setLocation(150, 520);
+                }
+                if(block.getSlot() == 2){
+                    block.setLocation(250, 520);
+                }
             }
 
             // Your existing code...
