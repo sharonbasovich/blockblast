@@ -1,6 +1,7 @@
 import javax.swing.*;
 
 import src.GameLoop;
+import src.Leaderboard;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +18,7 @@ public class BlockBlast implements ActionListener {
     static JTextField name;
     static JLabel username;
     static JLabel error;
-    boolean flag = false;
+    static boolean flag = false;
     static String user;
     static JButton viewLeaderboard;
     static JLabel titleLabel;
@@ -221,7 +222,9 @@ public class BlockBlast implements ActionListener {
                 box.setVisible(false);
                 name.setVisible(false);
                 username.setVisible(false);
-                new GameLoop(frame, user);
+                new GameLoop(frame, user, () -> resetUI());
+
+                System.out.println("reached");
             }
         } else if (e.getSource() == viewLeaderboard) {
             start.setVisible(false);
@@ -324,5 +327,15 @@ public class BlockBlast implements ActionListener {
             // System.out.println("time");
             box.setIcon(piece.getNextPiece());
         }
+    }
+
+    public static void resetUI() {
+        start.setVisible(true);
+        viewLeaderboard.setVisible(true);
+        titleLabel.setVisible(true);
+        flag = false;
+        // box.setVisible(true);
+        // name.setVisible(true);
+        // username.setVisible(true);
     }
 }

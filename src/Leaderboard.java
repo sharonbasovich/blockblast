@@ -1,3 +1,4 @@
+package src;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -22,9 +23,9 @@ public class Leaderboard {
             
             BufferedWriter writer = new BufferedWriter(new FileWriter("leaderboard.txt"));
             for (String[] strings : scores) {
-                for (String string : strings) {
-                    System.out.println(string);
-                }
+                // for (String string : strings) {
+                //     // System.out.println(string);
+                // }
                 writer.write(strings[0] + "," + strings[1]+ "\n");
             }
 

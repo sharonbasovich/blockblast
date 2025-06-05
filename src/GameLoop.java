@@ -3,8 +3,6 @@ package src;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class GameLoop {
     static JLabel score = new JLabel();
@@ -45,7 +43,7 @@ public class GameLoop {
         frame.getContentPane().setBackground(new Color(0x1559c1));
     }
 
-    public GameLoop(JFrame frame, String username) {
+    public GameLoop(JFrame frame, String username, Runnable goBack) {
         // JFrame frame = new JFrame();
 
         // setupFrame(frame);
@@ -57,8 +55,9 @@ public class GameLoop {
         score.setForeground(Color.WHITE);
         score.setHorizontalAlignment(SwingConstants.CENTER);
         score.setFont(new Font("SansSerif", Font.BOLD, 20));
-        // Score
-        frame.add(highscore.getHighscoreElement());
+        score.setVisible(true);
+        JLabel highscoreLabel = highscore.getHighscoreElement();
+        frame.add(highscoreLabel);
         frame.add(score);
 
         initBoard(game, frame, layeredPane);
@@ -97,6 +96,20 @@ public class GameLoop {
         quit.setFont(new Font("SansSerif", Font.BOLD, 12));
         quit.setFocusable(false);
         quit.setBorderPainted(false);
+
+        quit.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+            System.out.println("clicked");
+            highscoreLabel.setVisible(false);
+            score.setVisible(false);
+            name.setVisible(false);
+            quit.setVisible(false);
+            layeredPane.setVisible(false);
+            String[] score = {username, Integer.toString(game.getScore())};
+            new Leaderboard(score);
+            goBack.run();       
+         }          
+      });
 
         frame.add(quit);
 
