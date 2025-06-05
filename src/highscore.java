@@ -1,3 +1,4 @@
+package src;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.awt.*;
@@ -19,7 +20,7 @@ public class highscore {
     //     frame.setVisible(true);
     // }
 
-    public JLabel getHighscoreElement() {
+    public static JLabel getHighscoreElement() {
         JLabel highscore = new JLabel();
         ImageIcon crown = new ImageIcon(
                 new ImageIcon("crown.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
@@ -34,7 +35,7 @@ public class highscore {
                 highscore.setIcon(crown);
                 highscore.setIconTextGap(6);
                 highscore.setFont(new Font("SansSerif", Font.BOLD, 20));
-                highscore.setBounds(0, 0, 95, 25);
+                highscore.setBounds(20, 20, 95, 25);
             }
 
             

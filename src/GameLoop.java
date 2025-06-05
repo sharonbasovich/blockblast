@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class BlockBlast {
+public class GameLoop {
     static JLabel score = new JLabel();
 
     public static void initBoard(Game game, JFrame frame, JLayeredPane layeredPane) {
@@ -45,23 +45,60 @@ public class BlockBlast {
         frame.getContentPane().setBackground(new Color(0x1559c1));
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
+    public GameLoop(JFrame frame, String username) {
+        // JFrame frame = new JFrame();
 
-        setupFrame(frame);
+        // setupFrame(frame);
         Game game = new Game();
         JLayeredPane layeredPane = new JLayeredPane();
 
         score.setText("Score: " + String.valueOf(game.getScore()));
-        score.setBounds(10, 10, 200, 30);
+        score.setBounds(100, 60, 200, 30);
         score.setForeground(Color.WHITE);
-        score.setFont(new Font("Arial", Font.BOLD, 20));
+        score.setHorizontalAlignment(SwingConstants.CENTER);
+        score.setFont(new Font("SansSerif", Font.BOLD, 20));
         // Score
-
+        frame.add(highscore.getHighscoreElement());
         frame.add(score);
 
         initBoard(game, frame, layeredPane);
         initBlocks(game, frame, layeredPane);
+
+
+        // username
+        JLabel name = new JLabel();
+        name.setText(username);
+        name.setBounds(220, 20, 150, 30);
+        name.setFont(new Font("SansSerif", Font.BOLD, 20));
+        name.setForeground(new Color(0xeea018));
+        name.setHorizontalAlignment(SwingConstants.RIGHT);
+
+        frame.add(name);
+
+        JButton quit = new JButton("Quit");
+        quit.setBackground(Color.red);
+        quit.setForeground(Color.white);
+        // quit.setBounds(280, 700, 80, 40);
+        quit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                quit.setBackground(new Color(0x19cba4)); // Change color on hover
+                quit.setBounds(160, 20, 80, 30);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                quit.setBounds(170, 20, 60, 30);
+
+                quit.setBackground(Color.red); // Restore original color
+            }
+        });
+        quit.setBounds(170, 20, 60, 30);
+        quit.setFont(new Font("SansSerif", Font.BOLD, 12));
+        quit.setFocusable(false);
+        quit.setBorderPainted(false);
+
+        frame.add(quit);
 
         frame.setVisible(true);
         new Thread(() -> {
@@ -100,10 +137,10 @@ public class BlockBlast {
         block.addMouseListener(adapter);
         block.addMouseMotionListener(adapter);
     }
-    public static void onHover(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location){
-        
-    }
 
+    public static void onHover(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location) {
+
+    }
 
     public static void onRelease(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location) {
         System.out.println(30 + (8 - block.getw() + 1) * 40);
@@ -138,7 +175,7 @@ public class BlockBlast {
                     game.notifyAll();
                 }
                 game.setScore(game.getScore() + block.getNumberOfBlocks());
-                
+
                 System.out.println("Score: " + game.getScore());
                 score.setText("Score: " + String.valueOf(game.getScore()));
                 frame.revalidate();

@@ -1,4 +1,7 @@
 import javax.swing.*;
+
+import src.GameLoop;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -211,6 +214,14 @@ public class BlockBlast implements ActionListener {
                 System.out.println("Invalid");
             } else {
                 user = name.getText();
+
+                start.setVisible(false);
+                viewLeaderboard.setVisible(false);
+                titleLabel.setVisible(false);
+                box.setVisible(false);
+                name.setVisible(false);
+                username.setVisible(false);
+                new GameLoop(frame, user);
             }
         } else if (e.getSource() == viewLeaderboard) {
             start.setVisible(false);
