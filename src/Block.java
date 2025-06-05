@@ -7,6 +7,7 @@ public class Block extends JPanel {
     private boolean[][] shape;
     private String color;
     private BlockTile[][] blockTiles;
+    private int numberOfBlocks;
 
     public Block(int w, int h, String color, boolean[][] shape) {
         this.w = w;
@@ -90,5 +91,14 @@ public class Block extends JPanel {
 
     public void setBlockTiles(BlockTile[][] blockTiles) {
         this.blockTiles = blockTiles;
+    }
+    public int getNumberOfBlocks() {
+        int count = 0;
+        for(int i = 0;i<shape.length;i++){
+            for(int j = 0;j<shape[0].length;j++){
+                if(shape[i][j]) count++;
+            }
+        }
+        return count;
     }
 }

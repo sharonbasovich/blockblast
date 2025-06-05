@@ -5,31 +5,28 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class BlockBlast {
-    public static void init(Game game, JFrame frame) {
-        JLayeredPane layeredPane = new JLayeredPane();
+    static JLabel score = new JLabel();
+
+    public static void initBoard(Game game, JFrame frame, JLayeredPane layeredPane) {
         // Add board panel
         BoardPanel boardPanel = new BoardPanel(game.getBoard());
         boardPanel.setBounds(30, 100, 325, 500);
         layeredPane.add(boardPanel, JLayeredPane.DEFAULT_LAYER);
 
-        Block block = new Block(3, 2, "#ff0000", new boolean[][] { { true, true, true }, { true, true, true } });
-        block.setBounds(5, 520, 3 * 40, 2 * 40); 
-        makeDraggable(block, frame, layeredPane, game);
-        layeredPane.add(block, JLayeredPane.DRAG_LAYER);
-
-        Block block2 = new Block(1, 2, "#fff000", new boolean[][] { {true}, {true}});
-        block2.setBounds(200, 520, 1 * 40, 2 * 40); 
-        makeDraggable(block2, frame, layeredPane, game);
-        layeredPane.add(block2, JLayeredPane.DRAG_LAYER);
-
-        Block block3 = new Block(3, 1, "#ffff00", new boolean[][] {{ true, true, true}});
-        block3.setBounds(250, 520, 3 * 40, 1 * 40); 
-        makeDraggable(block3, frame, layeredPane, game);
-        layeredPane.add(block3, JLayeredPane.DRAG_LAYER);
-        
-        
         layeredPane.setBounds(0, 0, 400, 800);
         frame.add(layeredPane);
+    }
+
+    public static void initBlocks(Game game, JFrame frame, JLayeredPane layeredPane) {
+        Block block = new Block(3, 2, "#ff0000", new boolean[][] { { true, true, true }, { true, true, true } });
+        makeDraggable(block, frame, layeredPane, game);
+        game.getBlocks().add(block);
+        Block block2 = new Block(1, 2, "#fff000", new boolean[][] { { true }, { true } });
+        makeDraggable(block2, frame, layeredPane, game);
+        game.getBlocks().add(block2);
+        Block block3 = new Block(3, 1, "#00ff00", new boolean[][] { { true, true, true } });
+        makeDraggable(block3, frame, layeredPane, game);
+        game.getBlocks().add(block3);
     }
 
     public static void setupFrame(JFrame frame) {
@@ -48,21 +45,30 @@ public class BlockBlast {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
+
         setupFrame(frame);
         Game game = new Game();
+        JLayeredPane layeredPane = new JLayeredPane();
 
-        // Score
-        JLabel score = new JLabel();
         score.setText("Score: " + String.valueOf(game.getScore()));
-        score.setBounds(10, 10, 200, 30); // x, y, width, height
-        score.setForeground(Color.WHITE); // Make text visible on blue background
+        score.setBounds(10, 10, 200, 30);
+        score.setForeground(Color.WHITE);
         score.setFont(new Font("Arial", Font.BOLD, 20));
+        // Score
+
         frame.add(score);
 
-        init(game, frame);
+        initBoard(game, frame, layeredPane);
+        initBlocks(game, frame, layeredPane);
 
-        // render the frame
-        frame.setVisible(true); // make frame visible
+        frame.setVisible(true);
+        new Thread(() -> {
+            try {
+                game.playGame(frame, layeredPane);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private static void makeDraggable(Block block, JFrame frame, JLayeredPane layeredPane, Game game) {
@@ -84,7 +90,7 @@ public class BlockBlast {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                Point location = block.getLocation();
+                Point location = new Point(block.getX() + 20, block.getY() + 20);
                 onRelease(block, frame, layeredPane, game, location);
             }
         };
@@ -92,11 +98,16 @@ public class BlockBlast {
         block.addMouseListener(adapter);
         block.addMouseMotionListener(adapter);
     }
+    public static void onHover(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location){
+        
+    }
+
 
     public static void onRelease(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location) {
-        System.out.println(30+(8-block.getw()+1)*40);
-        System.out.println(100+(8-block.geth()+1)*40);
-        if (location.x > 30 && location.x < 30+(8-block.getw()+1)*40 && location.y > 100 && location.y < 100+(8-block.geth()+1)*40) {
+        System.out.println(30 + (8 - block.getw() + 1) * 40);
+        System.out.println(100 + (8 - block.geth() + 1) * 40);
+        if (location.x > 30 && location.x < 30 + (8 - block.getw() + 1) * 40 && location.y > 100
+                && location.y < 100 + (8 - block.geth() + 1) * 40) {
             System.out.println("Inside valid drop zone!");
             // Your code for handling valid drop
 
@@ -113,11 +124,23 @@ public class BlockBlast {
                         game.getBoard()[x + i][y + j].setColor(block.getColor());
 
                     }
-                    game.placeBlock(block, x, y);
-                    layeredPane.remove(block);
-                    frame.revalidate();
-                    frame.repaint();
+
                 }
+                game.placeBlock(block, x, y);
+                layeredPane.remove(block);
+                game.getOnHand().remove(block);
+                System.out.println("removed");
+
+                System.out.println(game.getOnHand().size());
+                synchronized (game) {
+                    game.notifyAll();
+                }
+                game.setScore(game.getScore() + block.getNumberOfBlocks());
+                
+                System.out.println("Score: " + game.getScore());
+                score.setText("Score: " + String.valueOf(game.getScore()));
+                frame.revalidate();
+                frame.repaint();
             } else {
                 System.out.println("Outside valid drop zone, returning to home position");
                 block.setLocation(5, 520);
