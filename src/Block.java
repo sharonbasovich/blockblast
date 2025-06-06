@@ -34,7 +34,7 @@ public class Block extends JPanel {
                     // Create BlockTile with coordinates relative to this panel
                     blockTiles[i][j] = new BlockTile(j * 40, i * 40, color, true);
                 } else {
-                    blockTiles[i][j] = null; // No tile for empty spaces
+                    blockTiles[i][j] = new BlockTile(j * 40, i * 40, color, false); // No tile for empty spaces
                 }
             }
         }

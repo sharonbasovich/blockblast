@@ -24,7 +24,7 @@ public class GameLoop {
         Block block2 = new Block(1, 2, "#fff000", new boolean[][] { { true }, { true } });
         makeDraggable(block2, frame, layeredPane, game);
         game.getBlocks().add(block2);
-        Block block3 = new Block(3, 1, "#00ff00", new boolean[][] { { true, true, true } });
+        Block block3 = new Block(2, 3, "#00ff00", new boolean[][] { { false, true} , {true, true}, {true, false}});
         makeDraggable(block3, frame, layeredPane, game);
         game.getBlocks().add(block3);
     }
@@ -235,9 +235,7 @@ public class GameLoop {
                 synchronized (game) {
                     game.notifyAll();
                 }
-                synchronized (GameLoop.class) {
-                    GameLoop.class.wait();
-                }
+                game.updateBoard();
                 game.setScore(game.getScore() + block.getNumberOfBlocks());
                 System.out.println("Score: " + game.getScore());
                 score.setText("Score: " + String.valueOf(game.getScore()));

@@ -51,6 +51,7 @@ public class Game {
                 onHand.add(blocks.get(1));
                 onHand.add(blocks.get(2));
                 onHand.get(0).setBounds(5, 500, onHand.get(0).getw() * 40, onHand.get(0).geth() * 40);
+                
                 layeredPane.add(onHand.get(0), JLayeredPane.DRAG_LAYER);
                 System.out.println("Block 1 added");
                 onHand.get(0).setSlot(0);
@@ -65,23 +66,8 @@ public class Game {
 
             }
             wait();
-            updateBoard();
-            frame.repaint();
-            frame.revalidate();
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    System.out.print(board[i][j].isOccupied() + " ");
-                }
-                System.out.println();
-            }
-            synchronized (GameLoop.class) {
-                GameLoop.class.notifyAll();
-            }
-            if(checkForLoss()){
-                break;
-            }
+            
         }
-        System.out.println("lost");
     }
 
     public void placeBlock(Block b, int startX, int startY) {
