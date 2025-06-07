@@ -203,9 +203,13 @@ public class BlockBlast implements ActionListener {
         frame.setVisible(true); // make frame visible
     }
 
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == start && (!flag)) {
+            Sound button = new Sound();
+            button.playOnce(4);
             System.out.println("Show username");
             start.setText("Go!");
             name.setVisible(true);
@@ -215,9 +219,13 @@ public class BlockBlast implements ActionListener {
         } else if (e.getSource() == start && flag) {
             System.out.println("Validate username");
             if (name.getText().length() == 0) {
+                Sound button = new Sound();
+                button.playOnce(4);
                 error.setVisible(true);
                 System.out.println("Invalid");
             } else {
+                Sound startSound = new Sound();
+                startSound.playOnce(2);
                 user = name.getText();
                 error.setVisible(false);
                 start.setVisible(false);
@@ -231,6 +239,8 @@ public class BlockBlast implements ActionListener {
                 System.out.println("reached");
             }
         } else if (e.getSource() == viewLeaderboard) {
+            Sound button = new Sound();
+            button.playOnce(4);
             start.setVisible(false);
             viewLeaderboard.setVisible(false);
             titleLabel.setVisible(false);
@@ -319,6 +329,8 @@ public class BlockBlast implements ActionListener {
 
             }
         } else if (e.getSource() == back) {
+            Sound button = new Sound();
+            button.playOnce(4);
             System.out.println("go back");
             scrollPane.setVisible(false);
             titleLabel.setVisible(true);

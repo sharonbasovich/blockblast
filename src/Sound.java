@@ -14,11 +14,13 @@ public class Sound {
 
     // Example: Set volume to 50% of max (you can change this value)
     float volume = 0.0f; // 0.0f is max volume, negative is quieter
-    
 
     public Sound() {
         soundURL[0] = getClass().getResource("lobby.wav");
         soundURL[1] = getClass().getResource("place.wav");
+        soundURL[2] = getClass().getResource("start.wav");
+        soundURL[3] = getClass().getResource("pickup.wav");
+        soundURL[4] = getClass().getResource("button.wav");
 
         // soundURL[0] = getClass().getResource("C:/School/CS12/cpt/SFX/lobby.wav");
 
@@ -35,10 +37,10 @@ public class Sound {
         try {
             if (i == 0) {
                 volume = -20.0f; // 0.0f is max volume, negative is quieter
+            } else if (i == 3) {
+                volume = -10.0f;
             } else {
                 volume = 0.0f; // 0.0f is max volume, negative is quieter
-
-                
             }
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
