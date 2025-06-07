@@ -2,6 +2,7 @@ package src;
 
 import java.awt.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 
 public class GameLoop {
@@ -212,6 +213,7 @@ public class GameLoop {
         if (location.x > 30 && location.x < 30 + (8 - block.getw() + 1) * 40 && location.y > 100
                 && location.y < 100 + (8 - block.geth() + 1) * 40) {
             System.out.println("Inside valid drop zone!");
+            
             // Your code for handling valid drop
 
             // For debugging, let's highlight where we think the block should go
@@ -222,6 +224,8 @@ public class GameLoop {
             int w = block.getWidth() / 40;
             int h = block.getHeight() / 40;
             if (game.BlockFits(block, x, y) == true) {
+                Sound place = new Sound();
+                place.playOnce(1);
                 for (int i = 0; i < w; i++) {
                     for (int j = 0; j < h; j++) {
                         game.getBoard()[y+j][x + i].setColor(block.getColor());

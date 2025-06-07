@@ -2,6 +2,7 @@ import javax.swing.*;
 
 import src.GameLoop;
 import src.Leaderboard;
+import src.Sound;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,9 @@ public class BlockBlast implements ActionListener {
     static JLabel titleLeaderboard;
 
     public static void main(String[] args) {
+
+        Sound sound = new Sound();
+        sound.play(0);
 
         String[] test = { "Sharon", "6" };
         new Leaderboard(test);

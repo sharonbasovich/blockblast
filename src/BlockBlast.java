@@ -2,6 +2,7 @@ package src;
 
 import java.awt.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,7 +15,6 @@ public class BlockBlast {
         BoardPanel boardPanel = new BoardPanel(game.getBoard());
         boardPanel.setBounds(30, 100, 325, 500);
         layeredPane.add(boardPanel, JLayeredPane.DEFAULT_LAYER);
-
         layeredPane.setBounds(0, 0, 400, 800);
         frame.add(layeredPane);
     }
