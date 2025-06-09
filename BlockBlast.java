@@ -1,3 +1,6 @@
+// import dependencies and libraries
+// this includes java swing, the basis for the game
+
 import javax.swing.*;
 
 import src.GameLoop;
@@ -12,15 +15,13 @@ import java.io.FileReader;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
 public class BlockBlast implements ActionListener {
 
+    // ui elements
     static JButton start;
     static JTextField name;
     static JLabel username;
     static JLabel error;
-    static boolean flag = false;
-    static String user;
     static JButton viewLeaderboard;
     static JLabel titleLabel;
     static JFrame frame;
@@ -28,23 +29,29 @@ public class BlockBlast implements ActionListener {
     static JScrollPane scrollPane;
     static Timer time;
     static JLabel box;
-    static falling piece;
     static JLabel titleLeaderboard;
+    static falling piece;
+
+    // flag to track start button state
+    static boolean flag = false;
+
+    // string to store username
+    static String user;
 
     public static void main(String[] args) {
 
+        // on startup, play background music
         Sound sound = new Sound();
         sound.play(0);
 
-        String[] test = { "Sharon", "6" };
-        new Leaderboard(test);
-
+        // create the viewing window
         frame = new JFrame();
         frame.setTitle("Block Blast - Sharon and Yichen"); // set name of app
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exi program when closing window
         frame.setResizable(false); // prevent resizing
         frame.setSize(400, 800); // set dimensions of window
         frame.setLayout(null);
+
         // set app icon
         ImageIcon icon = new ImageIcon("logo.png");
         frame.setIconImage(icon.getImage());
@@ -52,19 +59,20 @@ public class BlockBlast implements ActionListener {
         // set background color
         frame.getContentPane().setBackground(new Color(0x1559c1));
 
-        // create title logo
+        // create and resize title logo
         ImageIcon title = new ImageIcon(
                 new ImageIcon("title.png").getImage().getScaledInstance(386, 398, Image.SCALE_SMOOTH));
         titleLabel = new JLabel();
         titleLabel.setIcon(title);
-        // titleLabel.setVerticalAlignment(JLabel.TOP);
-        // titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setBounds(0, 0, 385, 385);
 
+        // add title logo to frame
         frame.add(titleLabel);
 
-        // create
+        // create the start button
         start = new JButton();
+
+        // set the image, text, and other styling of the button
         ImageIcon play = new ImageIcon(
                 new ImageIcon("play.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         start.setIcon(play);
@@ -80,6 +88,8 @@ public class BlockBlast implements ActionListener {
         start.setBorderPainted(false);
         start.setIconTextGap(10);
 
+        // override the mouseEntered and mouseExited functions to create custom hover
+        // effects
         start.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -95,11 +105,12 @@ public class BlockBlast implements ActionListener {
             }
         });
 
-
         frame.add(start);
 
-        // create username prompt
+        // create text to prompt for username
         username = new JLabel();
+
+        // set text and styling for username prompt
         username.setText("Username:");
         username.setForeground(Color.white);
         username.setBounds(105, 600, 200, 50);
@@ -108,21 +119,29 @@ public class BlockBlast implements ActionListener {
 
         frame.add(username);
 
-        // create name input box
+        // create the input box for the username
         name = new JTextField();
+
+        // style the input box
         name.setBounds(100, 650, 200, 50);
         name.setVisible(false);
         name.setBackground(Color.orange);
         name.setCaretColor(Color.white);
         name.setForeground(Color.white);
         name.setFont(new Font("SansSerif", Font.BOLD, 30));
+
+        // use BorderFactory to customize the border
         name.setBorder(
                 BorderFactory.createCompoundBorder(name.getBorder(), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         frame.add(name);
 
-        // create error message
+        // create error message to inform user if text box is empty
         error = new JLabel();
+
+        // use inline html to add line breaks to text
         error.setText("<html><body>Name must be at least<br>one character</body></html>");
+
+        // error message styling
         error.setForeground(Color.red);
         error.setBounds(105, 675, 200, 100);
         error.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -132,8 +151,12 @@ public class BlockBlast implements ActionListener {
 
         // create leaderboard button
         viewLeaderboard = new JButton();
+
+        // create and resize image
         ImageIcon view = new ImageIcon(
                 new ImageIcon("leaderboard.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+
+        // add all the styling to the leaderboard button
         viewLeaderboard.setIcon(view);
         viewLeaderboard.addActionListener(new BlockBlast());
         viewLeaderboard.setBounds(85, 610, 230, 50);
@@ -147,6 +170,8 @@ public class BlockBlast implements ActionListener {
         viewLeaderboard.setBorderPainted(false);
         viewLeaderboard.setIconTextGap(10);
 
+        // similarly to the start button, override the mouse listener to add hover
+        // effects like size and color changes
         viewLeaderboard.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -164,7 +189,7 @@ public class BlockBlast implements ActionListener {
 
         frame.add(viewLeaderboard);
 
-        // create back button
+        // create back button to go back to main menu from leaderboard
         back = new JButton();
         ImageIcon backButton = new ImageIcon(
                 new ImageIcon("back.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
@@ -177,53 +202,59 @@ public class BlockBlast implements ActionListener {
         back.setBorderPainted(false);
         back.addActionListener(new BlockBlast());
 
-        // create switching piece animation
+        // create and start a timer for the piece switching animation
         time = new Timer(400, new BlockBlast());
         time.start();
 
+        // create the switching piece element
         piece = new falling();
 
+        // create a bounding box for the piece animation
         box = new JLabel();
         box.setBounds(125, 370, 150, 150);
         box.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // initialize it to the first piece
         box.setIcon(piece.getNextPiece());
         frame.add(box);
 
-        // leaderboard title
+        // create the leaderboard title and style it
         titleLeaderboard = new JLabel("Leaderboard");
-        // titleLeaderboard.setVisible(false);
         titleLeaderboard.setBounds(90, 10, 200, 70);
-        // titleLeaderboard.setHorizontalAlignment(SwingConstants.CENTER);
         titleLeaderboard.setFocusable(false);
         titleLeaderboard.setFont(new Font("SansSerif", Font.BOLD, 30));
         titleLeaderboard.setForeground(Color.white);
         titleLeaderboard.setOpaque(false);
 
         // render the frame
-        frame.setVisible(true); // make frame visible
+        // this makes the window visible once all the elements have been added
+        frame.setVisible(true);
     }
 
-
-
+    // all the implementations of the buttons are in the action handler below
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == start && (!flag)) {
+            // if the start button is pressed, and hasn't been pressed yet, then play a
+            // sound and show the username input box
             Sound button = new Sound();
             button.playOnce(4);
-            System.out.println("Show username");
             start.setText("Go!");
             name.setVisible(true);
             username.setVisible(true);
             viewLeaderboard.setVisible(false);
             flag = true;
         } else if (e.getSource() == start && flag) {
-            System.out.println("Validate username");
+            // if start button pressed second time
             if (name.getText().length() == 0) {
+                // if the length is 0, the box is blank so make the error visible and play a
+                // sound effect
                 Sound button = new Sound();
                 button.playOnce(4);
                 error.setVisible(true);
-                System.out.println("Invalid");
             } else {
+                // if the length is valid, hide all home page ui elements and start the main
+                // gameloop, also play a sound
                 Sound startSound = new Sound();
                 startSound.playOnce(2);
                 user = name.getText();
@@ -235,43 +266,51 @@ public class BlockBlast implements ActionListener {
                 name.setVisible(false);
                 username.setVisible(false);
                 new GameLoop(frame, user, () -> resetUI());
-
-                System.out.println("reached");
             }
         } else if (e.getSource() == viewLeaderboard) {
+            // if the leaderboard button is pressed, hide home page elmenets and make
+            // leaderboard visible
             Sound button = new Sound();
             button.playOnce(4);
             start.setVisible(false);
             viewLeaderboard.setVisible(false);
             titleLabel.setVisible(false);
             box.setVisible(false);
-            // titleLeaderboard.setVisible(true);
 
+            // create a 2d array to hold the leaderboard information
             String[][] leaderboard;
 
             try {
+                // create a buffered reader to go through the leaderboard and count how many
+                // lines it has
                 BufferedReader lineCounter = new BufferedReader(new FileReader("leaderboard.txt"));
                 int lineCount = 0;
                 while (lineCounter.readLine() != null) {
                     lineCount++;
                 }
-
                 lineCounter.close();
 
+                // based on the line count, set the size of the leaderboard array
+                // the format of each entry is {username, score}
                 leaderboard = new String[lineCount][2];
 
+                // go through the text file again
                 BufferedReader reader = new BufferedReader(new FileReader("leaderboard.txt"));
 
-                int i = 0;
-
+                // initialize all elements to blank values in case of crash
                 for (int j = 0; j < leaderboard.length; j++) {
                     for (int j2 = 0; j2 < leaderboard[j].length; j2++) {
                         leaderboard[j][j2] = "";
                     }
                 }
 
+                // go through the text file again, and this time split each entry by a comma to
+                // get the username and score
+                int i = 0;
                 while (reader.ready()) {
                     leaderboard[i] = reader.readLine().split(",");
+                    
+                    // if the username is over 8 characters, shorten it to work with ui
                     if (leaderboard[i][0].length() > 8) {
                         leaderboard[i][0] = leaderboard[i][0].substring(0, 8);
                     }
@@ -279,44 +318,70 @@ public class BlockBlast implements ActionListener {
                 }
                 reader.close();
 
+                // create the panel to hold the leaderboard
                 JPanel leaderboardPanel = new JPanel();
+
+                // add the title to it
                 leaderboardPanel.add(titleLeaderboard);
                 leaderboardPanel.setLayout(null);
+
+                // set the size based on the number of leaderboard elements previously counted
                 leaderboardPanel.setPreferredSize(new Dimension(400, lineCount * 70 + 100));
                 leaderboardPanel.setBackground(new Color(0x1559c1));
-                JLabel[] entries = new JLabel[lineCount];
-                for (int k = 0; k < entries.length; k++) {
-                    entries[k] = new JLabel();
+                
+                // create an array to hold a JLabel for each leaderboard entry
+                JPanel[] entries = new JPanel[lineCount];
+                JLabel[] names = new JLabel[lineCount];
+                JLabel[] scores = new JLabel[lineCount];
+                leaderboardPanel.add(back);
 
+                // set each entry to the
+                for (int k = 0; k < entries.length; k++) {
+                    entries[k] = new JPanel();
+                    names[k] = new JLabel();
+                    scores[k]  = new JLabel();
+                    
                     String spacing = "";
                     if (k < 9) {
                         spacing = "  ";
                     }
 
-                    entries[k].setHorizontalAlignment(SwingConstants.LEFT);
-                    if (k == 0) {
-                        entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
-                                + "  ".repeat(10 - leaderboard[k][0].length()) + " "
-                                + leaderboard[k][1]);
-                    } else {
-                        entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
-                                + "  ".repeat(10 - leaderboard[k][0].length())
-                                + leaderboard[k][1]);
-                    }
-                    entries[k].setForeground(Color.white);
+                    names[k].setText(leaderboard[k][0]);
+                    scores[k].setText(leaderboard[k][1]);
+
+                    // entries[k].setHorizontalAlignment(SwingConstants.LEFT);
+                    // if (k == 0) {
+                    //     entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
+                    //             + "  ".repeat(10 - leaderboard[k][0].length()) + " "
+                    //             + leaderboard[k][1]);
+                    // } else {
+                    //     entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
+                    //             + "  ".repeat(10 - leaderboard[k][0].length())
+                    //             + leaderboard[k][1]);
+                    // }
+                    entries[k].setLayout(new BorderLayout());
+                    entries[k].add(names[k], BorderLayout.WEST);
+                    entries[k].add(scores[k], BorderLayout.EAST);
+                    names[k].setForeground(Color.white);
+                    scores[k].setForeground(Color.white);
+                    entries[k].setOpaque(false);
                     entries[k].setBounds(75, 70 + (70 * k), 250, 50);
-                    entries[k].setFont(new Font("SansSerif", Font.BOLD, 25));
+                    names[k].setFont(new Font("SansSerif", Font.BOLD, 25));
+                    scores[k].setFont(new Font("SansSerif", Font.BOLD, 25));
+
                     entries[k].setVisible(true);
 
                     if (k == 0) {
-                        entries[k].setForeground(new Color(0xFFD700));
+                        names[k].setForeground(new Color(0xFFD700));
+                        scores[k].setForeground(new Color(0xFFD700));
                     } else if (k == 1) {
-                        entries[k].setForeground(new Color(0xC0C0C0));
+                        names[k].setForeground(new Color(0xC0C0C0));
+                        scores[k].setForeground(new Color(0xC0C0C0));
                     } else if (k == 2) {
-                        entries[k].setForeground(new Color(0xCD7F32));
+                        names[k].setForeground(new Color(0xCD7F32));
+                        scores[k].setForeground(new Color(0xCD7F32));
                     }
 
-                    leaderboardPanel.add(back);
                     leaderboardPanel.add(entries[k]);
                 }
 
@@ -331,7 +396,6 @@ public class BlockBlast implements ActionListener {
         } else if (e.getSource() == back) {
             Sound button = new Sound();
             button.playOnce(4);
-            System.out.println("go back");
             scrollPane.setVisible(false);
             titleLabel.setVisible(true);
             start.setVisible(true);
