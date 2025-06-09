@@ -30,7 +30,7 @@ public class BlockBlast implements ActionListener {
     static Timer time;
     static JLabel box;
     static JLabel titleLeaderboard;
-    static falling piece;
+    static PieceAnimation piece;
 
     // flag to track start button state
     static boolean flag = false;
@@ -207,7 +207,7 @@ public class BlockBlast implements ActionListener {
         time.start();
 
         // create the switching piece element
-        piece = new falling();
+        piece = new PieceAnimation();
 
         // create a bounding box for the piece animation
         box = new JLabel();
@@ -309,7 +309,7 @@ public class BlockBlast implements ActionListener {
                 int i = 0;
                 while (reader.ready()) {
                     leaderboard[i] = reader.readLine().split(",");
-                    
+
                     // if the username is over 8 characters, shorten it to work with ui
                     if (leaderboard[i][0].length() > 8) {
                         leaderboard[i][0] = leaderboard[i][0].substring(0, 8);
@@ -328,7 +328,7 @@ public class BlockBlast implements ActionListener {
                 // set the size based on the number of leaderboard elements previously counted
                 leaderboardPanel.setPreferredSize(new Dimension(400, lineCount * 70 + 100));
                 leaderboardPanel.setBackground(new Color(0x1559c1));
-                
+
                 // create an array to hold a JLabel for each leaderboard entry
                 JPanel[] entries = new JPanel[lineCount];
                 JLabel[] names = new JLabel[lineCount];
@@ -337,40 +337,30 @@ public class BlockBlast implements ActionListener {
 
                 // set each entry to the
                 for (int k = 0; k < entries.length; k++) {
+                    // create the JPanels and JLabels
                     entries[k] = new JPanel();
                     names[k] = new JLabel();
-                    scores[k]  = new JLabel();
-                    
-                    String spacing = "";
-                    if (k < 9) {
-                        spacing = "  ";
-                    }
+                    scores[k] = new JLabel();
 
+                    // set the text to the names and score of the leaderboard
                     names[k].setText(leaderboard[k][0]);
                     scores[k].setText(leaderboard[k][1]);
 
-                    // entries[k].setHorizontalAlignment(SwingConstants.LEFT);
-                    // if (k == 0) {
-                    //     entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
-                    //             + "  ".repeat(10 - leaderboard[k][0].length()) + " "
-                    //             + leaderboard[k][1]);
-                    // } else {
-                    //     entries[k].setText(spacing + (k + 1) + ": " + leaderboard[k][0]
-                    //             + "  ".repeat(10 - leaderboard[k][0].length())
-                    //             + leaderboard[k][1]);
-                    // }
+                    // align the names on the left and score on the right
                     entries[k].setLayout(new BorderLayout());
                     entries[k].add(names[k], BorderLayout.WEST);
                     entries[k].add(scores[k], BorderLayout.EAST);
+
+                    // add styling
                     names[k].setForeground(Color.white);
                     scores[k].setForeground(Color.white);
                     entries[k].setOpaque(false);
                     entries[k].setBounds(75, 70 + (70 * k), 250, 50);
                     names[k].setFont(new Font("SansSerif", Font.BOLD, 25));
                     scores[k].setFont(new Font("SansSerif", Font.BOLD, 25));
-
                     entries[k].setVisible(true);
 
+                    // for the top 3, set the text colors to gold, silver, and bronze
                     if (k == 0) {
                         names[k].setForeground(new Color(0xFFD700));
                         scores[k].setForeground(new Color(0xFFD700));
@@ -385,6 +375,8 @@ public class BlockBlast implements ActionListener {
                     leaderboardPanel.add(entries[k]);
                 }
 
+                // create the scroll pane to allow for the user to scroll through the
+                // leaderboard if it exceeds the screen dimensions
                 scrollPane = new JScrollPane(leaderboardPanel);
                 scrollPane.setBounds(0, 0, 400, 800);
                 scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -394,6 +386,7 @@ public class BlockBlast implements ActionListener {
 
             }
         } else if (e.getSource() == back) {
+            // if back button is pressed, set homepage ui to visible and hide leaderboard ui
             Sound button = new Sound();
             button.playOnce(4);
             scrollPane.setVisible(false);
@@ -401,21 +394,17 @@ public class BlockBlast implements ActionListener {
             start.setVisible(true);
             viewLeaderboard.setVisible(true);
             box.setVisible(true);
-            // titleLeaderboard.setVisible(false);
-
         } else if (e.getSource() == time) {
-            // System.out.println("time");
+            // every tick of the timer, switch the piece in the animation
             box.setIcon(piece.getNextPiece());
         }
     }
 
     public static void resetUI() {
+        // callback function to set ui back to the homepage after the user quits the main gameloop
         start.setVisible(true);
         viewLeaderboard.setVisible(true);
         titleLabel.setVisible(true);
         flag = false;
-        // box.setVisible(true);
-        // name.setVisible(true);
-        // username.setVisible(true);
     }
 }

@@ -57,7 +57,7 @@ public class GameLoop {
         score.setHorizontalAlignment(SwingConstants.CENTER);
         score.setFont(new Font("SansSerif", Font.BOLD, 20));
         score.setVisible(true);
-        JLabel highscoreLabel = highscore.getHighscoreElement();
+        JLabel highscoreLabel = Highscore.getHighscoreElement();
         frame.add(highscoreLabel);
         frame.add(score);
 
