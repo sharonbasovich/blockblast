@@ -4,7 +4,6 @@
 import javax.swing.*;
 
 import src.GameLoop;
-import src.Leaderboard;
 import src.Sound;
 
 import java.awt.*;
