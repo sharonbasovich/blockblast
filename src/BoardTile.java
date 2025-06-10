@@ -46,7 +46,8 @@ public class BoardTile extends JComponent {
             g.setColor(Color.BLUE);
 
             g.fillRect(x, y, 40, 40);
-        } else {
+        } 
+        else {
             if (isOccupied) {
                 if (color != null) {
                 g.setColor(Color.decode(color));

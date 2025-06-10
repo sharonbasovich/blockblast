@@ -5,6 +5,10 @@ import java.awt.*;
 
 public class BlockTile extends JComponent {
     private boolean exists;
+    public boolean isExists() {
+        return exists;
+    }
+
     private int x;
     private int y;
     private String color;
@@ -42,9 +46,9 @@ public class BlockTile extends JComponent {
             g.drawRect(x, y, 40, 40);
         }
         else{
-            g.setColor(new Color(0,0,0,0));
+            // g.setColor(new Color(0,0,0,0));
             
-            g.fillRect(x, y, 40, 40);
+            // g.fillRect(x, y, 40, 40);
         }
     }
 }

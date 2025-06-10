@@ -10,8 +10,18 @@ public class Block extends JPanel {
     private String color;
     private BlockTile[][] blockTiles;
     private int numberOfBlocks;
+    private int returnX;
+    
+    public int getReturnX() {
+        return returnX;
+    }
+
+    public void setReturnX(int returnX) {
+        this.returnX = returnX;
+    }
     private int slot;
 
+    
     public void setSlot(int slot) {
         this.slot = slot;
     }
@@ -47,7 +57,6 @@ public class Block extends JPanel {
         // Make visible
         setOpaque(true);
         setBackground(Color.WHITE);
-        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
     }
 
     @Override

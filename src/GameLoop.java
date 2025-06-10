@@ -28,6 +28,178 @@ public class GameLoop {
         Block block3 = new Block(2, 3, "#00ff00", new boolean[][] { { false, true }, { true, true }, { true, false } });
         makeDraggable(block3, frame, layeredPane, game);
         game.getBlocks().add(block3);
+
+        Block l2 = new Block(1, 2, "#ff0000", new boolean[][] { { true }, { true } });
+        makeDraggable(l2, frame, layeredPane, game);
+        game.getBlocks().add(l2);
+
+        Block l3 = new Block(1, 3, "#ff0000", new boolean[][] { { true }, { true }, { true } });
+        makeDraggable(l3, frame, layeredPane, game);
+        game.getBlocks().add(l3);
+
+        Block l4 = new Block(1, 4, "#ff0000", new boolean[][] { { true }, { true }, { true }, { true } });
+        makeDraggable(l4, frame, layeredPane, game);
+        game.getBlocks().add(l4);
+
+        Block l5 = new Block(1, 5, "#ff0000", new boolean[][] { { true }, { true }, { true }, { true }, { true } });
+        makeDraggable(l5, frame, layeredPane, game);
+        game.getBlocks().add(l5);
+
+        Block w2 = new Block(2, 1, "#ff0000", new boolean[][] { { true, true } });
+        makeDraggable(w2, frame, layeredPane, game);
+        game.getBlocks().add(w2);
+
+        Block w3 = new Block(3, 1, "#ff0000", new boolean[][] { { true, true, true } });
+        makeDraggable(w3, frame, layeredPane, game);
+        game.getBlocks().add(w3);
+
+        Block w4 = new Block(4, 1, "#ff0000", new boolean[][] { { true, true, true, true } });
+        makeDraggable(w4, frame, layeredPane, game);
+        game.getBlocks().add(w4);
+
+        Block w5 = new Block(5, 1, "#ff0000", new boolean[][] { { true, true, true, true, true } });
+        makeDraggable(w5, frame, layeredPane, game);
+        game.getBlocks().add(w5);
+
+        Block s2 = new Block(2, 2, "#ff0000", new boolean[][] { {true, true } , {true, true} });
+        makeDraggable(s2, frame, layeredPane, game);
+        game.getBlocks().add(s2);   
+        
+        Block s3 = new Block(3, 3, "#ff0000", new boolean[][] { { true, true, true }, { true, true, true }, {true, true, true} });
+        makeDraggable(s3, frame, layeredPane, game);
+        game.getBlocks().add(s3);
+
+        Block r1 = new Block(2, 2, "#ff0000",
+                new boolean[][] { { true, true }, { true, false } });
+        makeDraggable(r1, frame, layeredPane, game);
+        game.getBlocks().add(r1);
+
+        Block r2 = new Block(2, 2, "#ff0000",
+                new boolean[][] { { false, true }, { true, true } });
+        makeDraggable(r2, frame, layeredPane, game);
+        game.getBlocks().add(r2);
+
+        Block r3 = new Block(2, 2, "#ff0000",
+                new boolean[][] { { true, false }, { true, true } });
+        makeDraggable(r3, frame, layeredPane, game);
+        game.getBlocks().add(r3);
+
+        Block r4 = new Block(2, 2, "#ff0000",
+                new boolean[][] { { true, true }, { false, true } });
+        makeDraggable(r4, frame, layeredPane, game);
+        game.getBlocks().add(r4);
+
+        Block t1 = new Block(2, 3, "#ff0000",
+                new boolean[][] { { true, false }, { true, true }, {true, false }});
+        makeDraggable(t1, frame, layeredPane, game);
+        game.getBlocks().add(t1);
+
+        Block t2 = new Block(2, 3, "#ff0000",
+                new boolean[][] { { false, true }, { true, true }, { false, true } });
+        makeDraggable(t2, frame, layeredPane, game);
+        game.getBlocks().add(t2);
+
+        Block t3 = new Block(3, 2, "#ff0000",
+                new boolean[][] { { false, true, false }, { true, true,  true } });
+        makeDraggable(t3, frame, layeredPane, game);
+        game.getBlocks().add(t3);
+
+        Block t4 = new Block(3, 2, "#ff0000",
+                new boolean[][] { { true, true, true }, { false, true, false } });
+        makeDraggable(t4, frame, layeredPane, game);
+        game.getBlocks().add(t4);
+
+        Block t5 = new Block(3, 2, "#ff0000",
+                new boolean[][] { { true, true, true }, { true, true, true } });
+        makeDraggable(t5, frame, layeredPane, game);
+        game.getBlocks().add(t5);
+
+        Block t6 = new Block(2, 3, "#ff0000",
+                new boolean[][] { { true, true }, { true, true }, { true, true } });
+        makeDraggable(t6, frame, layeredPane, game);
+        game.getBlocks().add(t6);
+
+        Block s1 = new Block(2, 3, "#ff0000",
+                new boolean[][] { { false, true }, { true, true }, { true, false } });
+        makeDraggable(s1, frame, layeredPane, game);
+        game.getBlocks().add(s1);
+
+        Block s4 = new Block(2, 3, "#ff0000",
+                new boolean[][] { { true, false }, { true, true }, { false, true } });
+        makeDraggable(s4, frame, layeredPane, game);
+        game.getBlocks().add(s4);
+
+        Block s6 = new Block(3, 2, "#ff0000",
+                new boolean[][] { { false, true, true }, { true, true, false } });
+        makeDraggable(s6, frame, layeredPane, game);
+        game.getBlocks().add(s6);
+
+        Block s7 = new Block(3, 2, "#ff0000",
+                new boolean[][] { { true, true, false }, { false, true, true } });
+        makeDraggable(s7, frame, layeredPane, game);
+        game.getBlocks().add(s7);
+
+
+        Block a7 = new Block(3, 2, "#ff0000",
+                new boolean[][] { { true, false, false }, { true, true, true } });
+        makeDraggable(a7, frame, layeredPane, game);
+        game.getBlocks().add(a7);
+
+        Block a6 = new Block(3, 2, "#ff0000",
+                new boolean[][] { { false, false, true }, { true, true, true } });
+        makeDraggable(a6, frame, layeredPane, game);
+        game.getBlocks().add(a6);
+
+        Block a5 = new Block(3, 2, "#ff0000",
+                new boolean[][] { { true, true, true }, { true, false, false } });
+        makeDraggable(a7, frame, layeredPane, game);
+        game.getBlocks().add(a7);
+
+        Block a4 = new Block(3, 2, "#ff0000",
+                new boolean[][] { { true, true, true }, { false, false, true } });
+        makeDraggable(a7, frame, layeredPane, game);
+        game.getBlocks().add(a7);
+
+        Block a0 = new Block(2, 3, "#ff0000",
+                new boolean[][] { { false, true }, { false, true }, { true, false } });
+        makeDraggable(a0, frame, layeredPane, game);
+        game.getBlocks().add(a0);
+
+        Block a1 = new Block(2, 3, "#ff0000",
+                new boolean[][] { { true, true }, { false, true }, { false, false } });
+        makeDraggable(a1, frame, layeredPane, game);
+        game.getBlocks().add(a1);
+
+        Block a2 = new Block(2, 3, "#ff0000",
+                new boolean[][] { { true, true }, { true, false }, { true, false } });
+        makeDraggable(a2, frame, layeredPane, game);
+        game.getBlocks().add(a2);
+
+        Block a3 = new Block(2, 3, "#ff0000",
+                new boolean[][] { { true, false }, { true, false }, { true, true } });
+        makeDraggable(a3, frame, layeredPane, game);
+        game.getBlocks().add(a3);
+
+        Block z2 = new Block(3, 3, "#ff0000",
+                new boolean[][] { { true, false, false }, { true, false, false }, { true, true, true } });
+        makeDraggable(z2, frame, layeredPane, game);
+        game.getBlocks().add(z2);
+        
+        Block z3 = new Block(3, 3, "#ff0000",
+                new boolean[][] { { true, true, true }, { true, false, false }, { true, false, false } });
+        makeDraggable(z3, frame, layeredPane, game);
+        game.getBlocks().add(z3);
+
+        Block z4 = new Block(3, 3, "#ff0000",
+                new boolean[][] { { true, true, true }, { false, false, true }, { false, false, true } });
+        makeDraggable(z4, frame, layeredPane, game);
+        game.getBlocks().add(z4);
+
+        Block z5 = new Block(3, 3, "#ff0000",
+                new boolean[][] { { false, false, true }, { false, false, true }, { true, true, true } });
+        makeDraggable(z5, frame, layeredPane, game);
+        game.getBlocks().add(z5);
+        
     }
 
     public static void setupFrame(JFrame frame) {
@@ -163,6 +335,11 @@ public class GameLoop {
     }
 
     public static void onHover(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location) {
+        // for(int i = 0;i<block.geth();i++){
+        // for(int j = 0;j<block.getw();j++){
+        // System.out.println(block.getBlockTiles()[y+i][x+j].isExists());
+        // }
+        // }
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (!game.getBoard()[i][j].isOccupied()) {
@@ -184,11 +361,13 @@ public class GameLoop {
             int w = block.getWidth() / 40;
             int h = block.getHeight() / 40;
             if (game.BlockFits(block, x, y) == true) {
-                for (int i = 0; i < w; i++) {
-                    for (int j = 0; j < h; j++) {
-                        Color c = Color.decode(block.getColor());
+                for (int i = 0; i < h; i++) {
+                    for (int j = 0; j < w; j++) {
+                        if (block.getBlockTiles()[i][j].isExists()) {
+                            Color c = Color.decode(block.getColor());
 
-                        game.getBoard()[y + j][x + i].setTint(new Color(c.getRed(), c.getGreen(), c.getBlue(), 50));
+                            game.getBoard()[y + i][x + j].setTint(new Color(c.getRed(), c.getGreen(), c.getBlue(), 50));
+                        }
                     }
                 }
                 frame.repaint();
@@ -200,16 +379,7 @@ public class GameLoop {
 
     public synchronized void onRelease(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location)
             throws InterruptedException {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (!game.getBoard()[i][j].isOccupied()) {
-                    game.getBoard()[i][j].setColor(null);
-                    game.getBoard()[i][j].setTint(null);
-                } else {
-                    game.getBoard()[i][j].setTint(null);
-                }
-            }
-        }
+
         System.out.println(30 + (8 - block.getw() + 1) * 40);
         System.out.println(100 + (8 - block.geth() + 1) * 40);
         if (location.x > 30 && location.x < 30 + (8 - block.getw() + 1) * 40 && location.y > 100
@@ -228,51 +398,51 @@ public class GameLoop {
             if (game.BlockFits(block, x, y) == true) {
                 Sound place = new Sound();
                 place.playOnce(1);
-                for (int i = 0; i < w; i++) {
-                    for (int j = 0; j < h; j++) {
-                        game.getBoard()[y + j][x + i].setColor(block.getColor());
+                for (int i = 0; i < h; i++) {
+                    for (int j = 0; j < w; j++) {
+                        if (block.getBlockTiles()[i][j].isExists()) {
+                            game.getBoard()[y + i][x + j].setColor(block.getColor());
+                        }
                     }
                 }
                 game.placeBlock(block, x, y);
                 layeredPane.remove(block);
                 game.getOnHand().remove(block);
+                game.getBlocks().add(block);
                 System.out.println("removed");
                 System.out.println(game.getOnHand().size());
+                for (Block b : game.getBlocks()) {
+                    System.out.println(b);
+                }
                 synchronized (game) {
                     game.notifyAll();
                 }
                 game.updateBoard();
                 game.setScore(game.getScore() + block.getNumberOfBlocks());
-                System.out.println("Score: " + game.getScore());
                 score.setText("Score: " + String.valueOf(game.getScore()));
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (!game.getBoard()[i][j].isOccupied()) {
+                            game.getBoard()[i][j].setColor(null);
+                            game.getBoard()[i][j].setTint(null);
+                        } else {
+                            game.getBoard()[i][j].setTint(null);
+                        }
+                    }
+                }
                 frame.revalidate();
                 frame.repaint();
             } else {
                 System.out.println("Outside valid drop zone, returning to home position");
-                if (block.getSlot() == 0) {
-                    block.setLocation(5, 520);
-                }
-                if (block.getSlot() == 1) {
-                    block.setLocation(150, 520);
-                }
-                if (block.getSlot() == 2) {
-                    block.setLocation(250, 520);
-                }
+                block.setLocation(block.getReturnX(), 520);
             }
 
             // Your existing code...
         } else {
             System.out.println("Outside valid drop zone, returning to home position");
             System.out.println("Outside valid drop zone, returning to home position");
-            if (block.getSlot() == 0) {
-                block.setLocation(5, 520);
-            }
-            if (block.getSlot() == 1) {
-                block.setLocation(150, 520);
-            }
-            if (block.getSlot() == 2) {
-                block.setLocation(250, 520);
-            }
+            block.setLocation(block.getReturnX(), 520);
+
         }
     }
 }

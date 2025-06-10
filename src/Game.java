@@ -50,23 +50,38 @@ public class Game {
                 onHand.add(blocks.get(0));
                 onHand.add(blocks.get(1));
                 onHand.add(blocks.get(2));
-                onHand.get(0).setBounds(5, 500, onHand.get(0).getw() * 40, onHand.get(0).geth() * 40);
-                
+                blocks.remove(0);
+                blocks.remove(0);
+
+                blocks.remove(0);
+
+                onHand.get(0).setBounds(5, 520, onHand.get(0).getw() * 40, onHand.get(0).geth() * 40);
+
                 layeredPane.add(onHand.get(0), JLayeredPane.DRAG_LAYER);
                 System.out.println("Block 1 added");
+                onHand.get(0).setReturnX(5);
                 onHand.get(0).setSlot(0);
-                onHand.get(1).setBounds(150, 500, onHand.get(1).getw() * 40, onHand.get(1).geth() * 40);
+                onHand.get(1).setBounds(5 + onHand.get(0).getw()
+                        * 40 + 50, 520, onHand.get(1).getw() * 40, onHand.get(1).geth() * 40);
                 layeredPane.add(onHand.get(1), JLayeredPane.DRAG_LAYER);
+
                 System.out.println("Block 2 added");
+                onHand.get(1).setReturnX(5 + onHand.get(0).getw()
+                        * 40 + 50);
                 onHand.get(1).setSlot(1);
-                onHand.get(2).setBounds(250, 500, onHand.get(2).getw() * 40, onHand.get(2).geth() * 40);
+                onHand.get(2).setBounds(5 + onHand.get(0).getw()
+                        * 40 + 50 + onHand.get(1).getw() * 40 + 50, 520, onHand.get(2).getw() * 40,
+                        onHand.get(2).geth() * 40);
+                onHand.get(2).setReturnX(5 + onHand.get(0).getw()
+                        * 40 + 50 + onHand.get(1).getw() * 40 + 50);
                 layeredPane.add(onHand.get(2), JLayeredPane.DRAG_LAYER);
+                onHand.get(2).setOpaque(false);
                 System.out.println("Block 3 added");
                 onHand.get(2).setSlot(2);
 
             }
             wait();
-            
+
         }
     }
 
