@@ -152,21 +152,21 @@ public class GameLoop {
 
         Block a5 = new Block(3, 2, "#ff0000",
                 new boolean[][] { { true, true, true }, { true, false, false } });
-        makeDraggable(a7, frame, layeredPane, game);
-        game.getBlocks().add(a7);
+        makeDraggable(a5, frame, layeredPane, game);
+        game.getBlocks().add(a5);
 
         Block a4 = new Block(3, 2, "#ff0000",
                 new boolean[][] { { true, true, true }, { false, false, true } });
-        makeDraggable(a7, frame, layeredPane, game);
-        game.getBlocks().add(a7);
+        makeDraggable(a4, frame, layeredPane, game);
+        game.getBlocks().add(a4);
 
         Block a0 = new Block(2, 3, "#ff0000",
-                new boolean[][] { { false, true }, { false, true }, { true, false } });
+                new boolean[][] { { false, true }, { false, true }, { true, true } });
         makeDraggable(a0, frame, layeredPane, game);
         game.getBlocks().add(a0);
 
         Block a1 = new Block(2, 3, "#ff0000",
-                new boolean[][] { { true, true }, { false, true }, { false, false } });
+                new boolean[][] { { true, true }, { false, true }, { false, true } });
         makeDraggable(a1, frame, layeredPane, game);
         game.getBlocks().add(a1);
 

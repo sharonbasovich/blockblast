@@ -7,7 +7,6 @@ import javax.swing.*;
 public class Game {
     private BoardTile[][] board;
     private int score;
-
     public void setScore(int score) {
         this.score = score;
     }
@@ -42,30 +41,53 @@ public class Game {
 
     public synchronized void playGame(JFrame frame, JLayeredPane layeredPane) throws InterruptedException {
         while (true) {
+            Collections.shuffle(blocks);
+            if(checkForLoss()){
+                JPanel loseScreen = new JPanel();
+                loseScreen.setBackground(Color.ORANGE);
+                loseScreen.setBounds(100, 250, 200, 200);
+                JLabel lost = new JLabel();
+                lost.setText("YOU LOST! \nPress quit to \nreturn to menu");
+                lost.setFont(new Font("SansSerif", Font.BOLD, 20));
+                lost.setForeground(Color.WHITE);
+                lost.setHorizontalAlignment(SwingConstants.CENTER);
+                loseScreen.add(lost);
+                layeredPane.add(loseScreen, JLayeredPane.POPUP_LAYER);
+                frame.repaint();
+                frame.revalidate();
+            }
             if (onHand.size() == 0) {
                 System.out.println(blocks.size());
                 for (int i = 0; i < 3; i++) {
                     System.out.println(blocks.get(i));
+                }
+                while(true){
+                    int endpoint = blocks.get(0).getw()*40 + 50 +blocks.get(1).getw()*40 + 50 +blocks.get(2).getw()*40;
+                    if(endpoint>400){
+                        Collections.shuffle(blocks);
+                    }
+                    else{
+                        break;
+                    }
                 }
                 onHand.add(blocks.get(0));
                 onHand.add(blocks.get(1));
                 onHand.add(blocks.get(2));
                 blocks.remove(0);
                 blocks.remove(0);
-
                 blocks.remove(0);
-
+                onHand.get(0).setOpaque(false);
+                onHand.get(1).setOpaque(false);
+                onHand.get(2).setOpaque(false);
                 onHand.get(0).setBounds(5, 520, onHand.get(0).getw() * 40, onHand.get(0).geth() * 40);
 
                 layeredPane.add(onHand.get(0), JLayeredPane.DRAG_LAYER);
-                System.out.println("Block 1 added");
                 onHand.get(0).setReturnX(5);
                 onHand.get(0).setSlot(0);
                 onHand.get(1).setBounds(5 + onHand.get(0).getw()
                         * 40 + 50, 520, onHand.get(1).getw() * 40, onHand.get(1).geth() * 40);
                 layeredPane.add(onHand.get(1), JLayeredPane.DRAG_LAYER);
 
-                System.out.println("Block 2 added");
                 onHand.get(1).setReturnX(5 + onHand.get(0).getw()
                         * 40 + 50);
                 onHand.get(1).setSlot(1);
@@ -75,9 +97,10 @@ public class Game {
                 onHand.get(2).setReturnX(5 + onHand.get(0).getw()
                         * 40 + 50 + onHand.get(1).getw() * 40 + 50);
                 layeredPane.add(onHand.get(2), JLayeredPane.DRAG_LAYER);
-                onHand.get(2).setOpaque(false);
-                System.out.println("Block 3 added");
+                
                 onHand.get(2).setSlot(2);
+
+                
 
             }
             wait();
@@ -99,7 +122,7 @@ public class Game {
     public boolean checkForLoss() {
         if (onHand.size() > 0) {
             for (int i = 0; i < onHand.size(); i++) {
-                if (checkValidMoves(onHand.get(i)) == false) {
+                if (checkValidMoves(onHand.get(i)) == true) {
                     return false;
                 }
             }
@@ -170,7 +193,7 @@ public class Game {
     public boolean checkValidMoves(Block b) {
         for (int i = 0; i < 8 - b.geth() + 1; i++) {
             for (int j = 0; j < 8 - b.getw() + 1; j++) {
-                if (BlockFits(b, i, j)) {
+                if (BlockFits(b, j, i)) {
                     return true;
                 }
             }
