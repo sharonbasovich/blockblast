@@ -7,9 +7,9 @@ import java.awt.event.*;
 
 public class GameLoop {
     static JLabel score = new JLabel();
-
+    //initialize the board
     public static void initBoard(Game game, JFrame frame, JLayeredPane layeredPane) {
-        // Add board panel
+        // Add board panel to the frame
         BoardPanel boardPanel = new BoardPanel(game.getBoard());
         boardPanel.setBounds(30, 100, 325, 500);
         layeredPane.add(boardPanel, JLayeredPane.DEFAULT_LAYER);
@@ -17,7 +17,7 @@ public class GameLoop {
         layeredPane.setBounds(0, 0, 400, 800);
         frame.add(layeredPane);
     }
-
+    //initialize all the blocks and make them visible in the frame
     public void initBlocks(Game game, JFrame frame, JLayeredPane layeredPane) {
         Block block = new Block(3, 2, "#ff0000", new boolean[][] { { true, true, true }, { true, true, true } });
         makeDraggable(block, frame, layeredPane, game);
@@ -296,50 +296,46 @@ public class GameLoop {
             }
         }).start();
     }
-
+    //method to allow a user to drag a block
     private void makeDraggable(Block block, JFrame frame, JLayeredPane layeredPane, Game game) {
         MouseAdapter adapter = new MouseAdapter() {
-            Point startPoint;
+            Point startPoint; //starting location of the block
 
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent e) { //method to set the start point and play sound
                 startPoint = e.getPoint();
                 Sound pickup = new Sound();
                 pickup.playOnce(3);
             }
 
             @Override
-            public void mouseDragged(MouseEvent e) {
+            public void mouseDragged(MouseEvent e) { //update the point of the block based on how the user moves the mouse
                 Point location = block.getLocation();
                 int x = location.x + e.getX() - startPoint.x;
                 int y = location.y + e.getY() - startPoint.y;
                 block.setLocation(x, y);
-                onHover(block, frame, layeredPane, game, new Point(block.getX() + 20, block.getY() + 20));
+                onHover(block, frame, layeredPane, game, new Point(block.getX() + 20, block.getY() + 20)); //onhover method: helps user visualize how the board would look after the block is placed and also shows valid moves
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) { //update the location of the block
                 Point location = new Point(block.getX() + 20, block.getY() + 20);
                 new Thread(() -> {
                     try {
-                        onRelease(block, frame, layeredPane, game, location);
+                        onRelease(block, frame, layeredPane, game, location); //run logic upon dropping
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
                 }).start();
             }
         };
-
+        //add listeners for drag and drop
         block.addMouseListener(adapter);
         block.addMouseMotionListener(adapter);
     }
 
     public static void onHover(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location) {
-        // for(int i = 0;i<block.geth();i++){
-        // for(int j = 0;j<block.getw();j++){
-        // System.out.println(block.getBlockTiles()[y+i][x+j].isExists());
-        // }
-        // }
+        //begin by making sure the board is displayed right (i.e. colors are properly assigned to each tile)
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (!game.getBoard()[i][j].isOccupied()) {
@@ -352,25 +348,24 @@ public class GameLoop {
         }
         frame.repaint();
         if (location.x > 30 && location.x < 30 + (8 - block.getw() + 1) * 40 && location.y > 100
-                && location.y < 100 + (8 - block.geth() + 1) * 40) {
+                && location.y < 100 + (8 - block.geth() + 1) * 40) { //check if block is being hovered over the board
             System.out.println("Inside valid drop zone!");
             int x = (int) (location.x - 30) / 40;
-            int y = (int) (location.y - 100) / 40;
+            int y = (int) (location.y - 100) / 40; //calculate x and y based on the coordinates of the board/grid
             System.out.println("x: " + x + " y: " + y);
-            // More debugging for the block dimensions
             int w = block.getWidth() / 40;
             int h = block.getHeight() / 40;
-            if (game.BlockFits(block, x, y) == true) {
+            if (game.BlockFits(block, x, y) == true) { //if the block fits at the location of the cursor
                 for (int i = 0; i < h; i++) {
                     for (int j = 0; j < w; j++) {
                         if (block.getBlockTiles()[i][j].isExists()) {
                             Color c = Color.decode(block.getColor());
-
+                            //set a tint as a "preview" of the block
                             game.getBoard()[y + i][x + j].setTint(new Color(c.getRed(), c.getGreen(), c.getBlue(), 50));
                         }
                     }
                 }
-                frame.repaint();
+                frame.repaint(); //repaint teh frame
             }
         } else {
             System.out.println("Outside valid drop zone, returning to home position");
@@ -379,47 +374,37 @@ public class GameLoop {
 
     public synchronized void onRelease(Block block, JFrame frame, JLayeredPane layeredPane, Game game, Point location)
             throws InterruptedException {
-
-        System.out.println(30 + (8 - block.getw() + 1) * 40);
-        System.out.println(100 + (8 - block.geth() + 1) * 40);
         if (location.x > 30 && location.x < 30 + (8 - block.getw() + 1) * 40 && location.y > 100
-                && location.y < 100 + (8 - block.geth() + 1) * 40) {
+                && location.y < 100 + (8 - block.geth() + 1) * 40) { //check if block is within valid location inside the board
             System.out.println("Inside valid drop zone!");
-
-            // Your code for handling valid drop
-
-            // For debugging, let's highlight where we think the block should go
+                    //same logic to find location and position of mouse/block as the onHover method
             int x = (int) (location.x - 30) / 40;
             int y = (int) (location.y - 100) / 40;
             System.out.println("x: " + x + " y: " + y);
-            // More debugging for the block dimensions
             int w = block.getWidth() / 40;
             int h = block.getHeight() / 40;
             if (game.BlockFits(block, x, y) == true) {
                 Sound place = new Sound();
                 place.playOnce(1);
-                for (int i = 0; i < h; i++) {
+                for (int i = 0; i < h; i++) { //set the color of the board to the same color as the block being placed only where the tile exists in the block shape
                     for (int j = 0; j < w; j++) {
                         if (block.getBlockTiles()[i][j].isExists()) {
                             game.getBoard()[y + i][x + j].setColor(block.getColor());
                         }
                     }
                 }
-                game.placeBlock(block, x, y);
+                game.placeBlock(block, x, y); //place the block and update the boolean 2D array
                 layeredPane.remove(block);
-                game.getOnHand().remove(block);
-                game.getBlocks().add(block);
-                System.out.println("removed");
-                System.out.println(game.getOnHand().size());
-                for (Block b : game.getBlocks()) {
-                    System.out.println(b);
-                }
+                game.getOnHand().remove(block); //remove the block from the frame and onHand
+                game.getBlocks().add(block); //place the block back into the blocks list
+                game.updateBoard(); //update the board (check for full rows and columns)
                 synchronized (game) {
-                    game.notifyAll();
+                    game.notifyAll(); //notify the game object that it can start checking for whether it needs to replenish the blocks on hand or not
                 }
-                game.updateBoard();
-                game.setScore(game.getScore() + block.getNumberOfBlocks());
+                
+                game.setScore(game.getScore() + block.getNumberOfBlocks()); //set the score of the game
                 score.setText("Score: " + String.valueOf(game.getScore()));
+
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         if (!game.getBoard()[i][j].isOccupied()) {
@@ -430,18 +415,14 @@ public class GameLoop {
                         }
                     }
                 }
-                frame.revalidate();
+                frame.revalidate(); //update the frame
                 frame.repaint();
             } else {
-                System.out.println("Outside valid drop zone, returning to home position");
-                block.setLocation(block.getReturnX(), 520);
+                block.setLocation(block.getReturnX(), 520); //if it cannot be placed, return it to its proper position outside the board
             }
-
-            // Your existing code...
         } else {
-            System.out.println("Outside valid drop zone, returning to home position");
-            System.out.println("Outside valid drop zone, returning to home position");
-            block.setLocation(block.getReturnX(), 520);
+            block.setLocation(block.getReturnX(), 520);// if the block is not hovered over the grid/board, return it to its proper position
+                                                       // outside the board
 
         }
     }

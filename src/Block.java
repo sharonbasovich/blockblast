@@ -4,14 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Block extends JPanel {
-    private int w;
-    private int h;
+    //Instance variables
+    private int w; //width
+    private int h; //height
     private boolean[][] shape;
     private String color;
     private BlockTile[][] blockTiles;
     private int numberOfBlocks;
     private int returnX;
-    
+    //getters and setters
     public int getReturnX() {
         return returnX;
     }
@@ -19,17 +20,8 @@ public class Block extends JPanel {
     public void setReturnX(int returnX) {
         this.returnX = returnX;
     }
-    private int slot;
 
-    
-    public void setSlot(int slot) {
-        this.slot = slot;
-    }
-
-    public int getSlot() {
-        return slot;
-    }
-
+    //constructor
     public Block(int w, int h, String color, boolean[][] shape) {
         this.w = w;
         this.h = h;
@@ -73,6 +65,8 @@ public class Block extends JPanel {
             }
         }
     }
+
+    //more getters and setters
     public int getw() {
         return w;
     }
@@ -112,6 +106,7 @@ public class Block extends JPanel {
     public void setBlockTiles(BlockTile[][] blockTiles) {
         this.blockTiles = blockTiles;
     }
+    //count the number of blocks for scoring
     public int getNumberOfBlocks() {
         int count = 0;
         for(int i = 0;i<shape.length;i++){
