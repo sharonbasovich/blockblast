@@ -38,6 +38,7 @@ public class BlockBlast implements ActionListener {
     static String user;
 
     public static void main(String[] args) {
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
         // on startup, play background music
         Sound sound = new Sound();
