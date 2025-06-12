@@ -7,6 +7,7 @@ import javax.swing.*;
 public class Game {
     private BoardTile[][] board;
     private int score;
+
     public void setScore(int score) {
         this.score = score;
     }
@@ -42,12 +43,12 @@ public class Game {
     public synchronized void playGame(JFrame frame, JLayeredPane layeredPane) throws InterruptedException {
         while (true) {
             Collections.shuffle(blocks);
-            if(checkForLoss()){
+            if (checkForLoss()) {
                 JPanel loseScreen = new JPanel();
                 loseScreen.setBackground(Color.ORANGE);
-                loseScreen.setBounds(100, 250, 200, 200);
                 JLabel lost = new JLabel();
-                lost.setText("YOU LOST! \nPress quit to \nreturn to menu");
+                loseScreen.setBounds(100, 250, 200, 150);
+                lost.setText("<html><body><br>YOU LOST!<br>Press quit to<br>return to menu</body></html>");
                 lost.setFont(new Font("SansSerif", Font.BOLD, 20));
                 lost.setForeground(Color.WHITE);
                 lost.setHorizontalAlignment(SwingConstants.CENTER);
@@ -61,12 +62,12 @@ public class Game {
                 for (int i = 0; i < 3; i++) {
                     System.out.println(blocks.get(i));
                 }
-                while(true){
-                    int endpoint = blocks.get(0).getw()*40 + 50 +blocks.get(1).getw()*40 + 50 +blocks.get(2).getw()*40;
-                    if(endpoint>400){
+                while (true) {
+                    int endpoint = blocks.get(0).getw() * 40 + 50 + blocks.get(1).getw() * 40 + 50
+                            + blocks.get(2).getw() * 40;
+                    if (endpoint > 400) {
                         Collections.shuffle(blocks);
-                    }
-                    else{
+                    } else {
                         break;
                     }
                 }
@@ -97,10 +98,8 @@ public class Game {
                 onHand.get(2).setReturnX(5 + onHand.get(0).getw()
                         * 40 + 50 + onHand.get(1).getw() * 40 + 50);
                 layeredPane.add(onHand.get(2), JLayeredPane.DRAG_LAYER);
-                
-                onHand.get(2).setSlot(2);
 
-                
+                onHand.get(2).setSlot(2);
 
             }
             wait();
